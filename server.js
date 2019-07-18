@@ -7,32 +7,37 @@
 **
 **
 ** Note for debugging: (if you are using Mac/Linux us export instead of set)
-   set DEBUG='app:api'      for middleware debug
-   set DEBUG='app:db'       for database related
-   set DEBUG='app:startup'  for startup related
-   set DEBUG='app:email'    for email or notification related issues
-   set DEBUG=               to cancel console.log or dev-debug mode.
+   set DEBUG=app:api      for middleware debug
+   set DEBUG=app:db       for database related
+   set DEBUG=app:startup  for startup related
+   set DEBUG=app:email    for email or notification related issues
+   set DEBUG=             to cancel console.log or dev-debug mode.
 ************************************************************************
 */
-const testmail = require('./utils/confirmEmail');
-
-const express = require('express');
+// const testmail = require("./utils/confirmEmail");
+require('express-async-errors');
+const express = require("express");
+const logger = require('./utils/loggerSetup');
 const app = express();
 
-require('./startup/routes')(app);
+require("./startup/routes")(app);
 require('./startup/dbConnection')();
+let logMsg; // placeholder variable for loggin
 
-// delte this at the end 
-app.get('/', (req, res) => { 
-    res.send('Hello Baanda 3');
+// delete this at the end XXX TESTING ONLY    XXXXXXXXXXXXXXXXXXXXXXXXXXX
+app.get("/", (req, res) => {
+  res.send("Hello Baanda 3 - http server testing");
 });
+// app.post("/testmail", (req, res) => {
+//   let ret = testmail(req, res, 1234);
+//   res.status(200).send("Outcome of send mail:" + ret);
+// });
+// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-app.post('/testmail', (req, res) => {
-    let ret = testmail(req, res, 1234);
-    res.status(200).send('Outcome of send mail:'+ ret);
-});
-
+// Start the server - ready to listen.
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-    console.log(`Server BabiMaDidiMeGeno listening at port ${port}`);
-})
+  console.log(`Server BabiMaDidiMeGeno listening at port ${port}`);
+  logMsg = { type: "server", domain: "startup", msg: `** Server BabiMaDidiMeGeno listening at port ${port}` };
+  logger.info(JSON.stringify(logMsg));
+});

@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // We create salt. Salt is a random string that is added before the hash so the 
 // result cannot be found out via hashing a set of passwords, hash and compare them.

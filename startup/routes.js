@@ -7,8 +7,8 @@
  **
  */
 // const helmet = require("helmet");
-const morgan = require("morgan");
-const fs = require("fs");
+// const morgan = require("morgan");
+// const fs = require("fs");
 // const path = require("path");
 const startupDebugger = require('debug')('app:startup');
 // Somewhere ... for db or other stuff we can write - port it to db modules
@@ -16,11 +16,13 @@ const startupDebugger = require('debug')('app:startup');
 // To debug, go to terminal and set c:/..> set DEBUG=app:startup<,app:db> or =app:* for all for all startup related console.log
 const express = require("express");
 
-const entryLogger = require("../middleware/logger");
-
+// const entryLogger = require("../middleware/logger");
+const error = require('../middleware/error');
+const logger = require('../utils/loggerSetup');
 const register = require("../routes/users/register");
 const login = require("../routes/users/login");
 const verify = require("../routes/users/verify");
+const dbtest = require('../routes/users/dbtest');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -33,19 +35,24 @@ module.exports = function(app) {
   // Change logfile name with date every day later on.
   // May want to use Morgan only when we want to study delays etc. 
   // For performance, use it only in development for R&D
-  if (app.get("env") === "development") {
-    app.use(
-      morgan("common", {
-        stream: fs.createWriteStream("./log/" + "access.log", { flags: "a" })
-      })
-    );
-    startupDebugger('Morgan enabled');
-  }
+  // if (app.get("env") === "development") {
+  //   app.use(
+  //     morgan("common", {
+  //       stream: fs.createWriteStream("./log/" + "access.log", { flags: "a" })
+  //     })
+  //   );
+  //   startupDebugger('Morgan enabled');
+  // }
 
   // Log any invocation to api upon entry into Baanda server that includes BaandaId.
-  app.use(entryLogger);
+  // app.use(entryLogger);
 
   app.use("/routes/users/register", register);
   app.use("/routes/users/login", login);
   app.use("/routes/users/verify", verify);
+  app.use('/routes/users/dbtest', dbtest);
+  
+  app.use(error);
+  let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };
+  logger.info(JSON.stringify(logMsg));
 };

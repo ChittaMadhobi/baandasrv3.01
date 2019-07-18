@@ -13,7 +13,7 @@ confirmMail = (req, confirmCode) => {
     //            '/routes/users/verify?id=' +
     //             confirmCode + '&email=' + toEmail;
     let link = req.protocol + '://' + keys.emailHost + 
-               '/routes/users/verify?id=' +
+               '/routes/users/verify?confirmCode=' +
                 confirmCode + '&email=' + toEmail;
 
     let htmlLink =

@@ -3,11 +3,14 @@ const mongoose = require("mongoose");
 const keys = require("../config/keys");
 const db = keys.mongoURI;
 
-module.exports = function() {
+module.exports = async function(next) {
   mongoose
     .connect(db, { useNewUrlParser: true })
     .then(() => {
         console.log(`Logged into MLab URI = ${db}`)
     })
-    .catch(err => console.log("Error Mongo : " + err));
+    .catch(err => {
+      console.log("Error Mongo : " + err);
+      return(1); // exit the system
+  });
 };

@@ -18,17 +18,17 @@ const validateRegisterInput = require('../../validation/users/validateRegisterIn
 router.post('/', async (req, res) => {
     dbDebugger('Inside /routes/users/register')
     // Validate
-    const { errors, isValid } = validateRegisterInput(req.body);
+    let { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
         // 400 is Invalid Request 
-        res.status(400).send(errors);
+        res.status(400).json(errors);
         return;
     }
     try { 
         let user = await User.findOne({ email: req.body.email });
         if (user) {
             errors.email = "Email already exist. Please log in."
-            return res.status(400).send(errors);
+            return res.status(400).json(errors);
         } 
         const avatargen = gravatar.url(req.body.email, {
             s: '200', //size
@@ -48,7 +48,8 @@ router.post('/', async (req, res) => {
             avatar: avatargen,
             password: hashedpwd,
             confirmCode: confirmationCode,
-            confirmBy: confirmBy
+            confirmBy: confirmBy,
+            created_at: Date.now()
         });
 
         let retSave = await user.save();
@@ -56,9 +57,11 @@ router.post('/', async (req, res) => {
         // send email for verification
         let retEmail = confirmEmail(req, confirmationCode);
         if (retEmail) {
-            res.status(200).send('Please confirm your email. Give sometime and/or check junk folder if you do not receive confirmation mail instantly.'); 
+            res.status(200).send('Please confirm your email. Wait few minutes and/or check junk folder.');
+            // errors = {};
+            // res.status(200).send(); 
         } else {
-            res.status(500).send('Encounterd error while sending email. Contact info@baanda.com if error persists'); 
+            res.status(500).json(errors); 
         }
         // res.status(200).send(_.pick(user, ['name', 'email', 'avatar']));
     } catch(err) {
