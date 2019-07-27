@@ -16,7 +16,7 @@ const validateRegisterInput = require('../../validation/users/validateRegisterIn
 // @desc    Registration. Sends email confirmation notice.
 // @access  Public
 router.post('/', async (req, res) => {
-    dbDebugger('Inside /routes/users/register')
+    dbDebugger('Inside /routes/users/register');
     // Validate
     let { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
         // send email for verification
         let retEmail = confirmEmail(req, confirmationCode);
         if (retEmail) {
-            res.status(200).send('Please confirm your email. Wait few minutes and/or check junk folder.');
+            res.status(200).json({message:'Registerd successfully. Please confirm your email to register.'});
             // errors = {};
             // res.status(200).send(); 
         } else {

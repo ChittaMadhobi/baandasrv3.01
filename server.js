@@ -18,7 +18,13 @@
 require('express-async-errors');
 const express = require("express");
 const logger = require('./utils/loggerSetup');
+const cors = require('cors');
+var path = require('path');
+
 const app = express();
+
+app.use(cors()); 
+app.use(express.static(path.join(__dirname, '../')));
 
 require("./startup/routes")(app);
 require('./startup/dbConnection')();
@@ -29,7 +35,8 @@ app.get("/", (req, res) => {
   res.send("Hello Baanda 3 - http server testing");
 });
 // app.post("/testmail", (req, res) => {
-//   let ret = testmail(req, res, 1234);
+//   // let ret = testmail(req, res, 1234);
+//   let ret = "abcd";
 //   res.status(200).send("Outcome of send mail:" + ret);
 // });
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

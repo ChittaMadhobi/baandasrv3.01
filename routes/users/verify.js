@@ -1,3 +1,6 @@
+/*
+** This verifies email after registration. Unless email is verified, a user cannot login.
+*/
 const express = require("express");
 const router = express.Router();
 

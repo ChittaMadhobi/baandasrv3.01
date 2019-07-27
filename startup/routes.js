@@ -24,6 +24,9 @@ const login = require("../routes/users/login");
 const verify = require("../routes/users/verify");
 const dbtest = require('../routes/users/dbtest');
 
+// Application API
+const getUserPersonaQ = require('../routes/users/getUserPersonaQ');
+
 module.exports = function(app) {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -51,6 +54,7 @@ module.exports = function(app) {
   app.use("/routes/users/login", login);
   app.use("/routes/users/verify", verify);
   app.use('/routes/users/dbtest', dbtest);
+  app.use('/routes/users/getUserPersonaQ', getUserPersonaQ);
   
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };

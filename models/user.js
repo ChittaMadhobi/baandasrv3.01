@@ -44,13 +44,67 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  isInitDone: {
+    type: Boolean,
+    default: false
+  },
+  personalInfo: {
+    hommeGeoAddress: {
+      streetAddress: {
+        type: String,
+        default: ""
+      },
+      city: {
+        type: String,
+        default: ""
+      },
+      State: {
+        type: String,
+        default: ""
+      },
+      country: {
+        type: String,
+        default: "USA"
+      },
+      zip: {
+        type: String,
+        default: ""
+      },
+      ipAddress: {
+        address: '',
+        default: ''
+      },
+      geoLocation: {
+        latitude: {type: String, default: ''},
+        longitude: {type: String, default: ''}
+
+      }
+    },
+    cell: {
+      countryCode: {
+        type: String,
+        default: "1"
+      },
+      number: {
+        type: String,
+        default: ""
+      }
+    }
+  },
+
   created_at: { type: Date, default: null },
   updated_at: { type: Date, default: null }
 });
 
 userSchema.methods.generateAuthToken = function() {
   const token = jwt.sign(
-    { baandaId: this.baandaId, name: this.name, isAdmin: this.isAdmin, email: this.email },
+    {
+      baandaId: this.baandaId,
+      name: this.name,
+      isAdmin: this.isAdmin,
+      email: this.email,
+      isInitDone: this.isInitDone
+    },
     keys.jwtSecretKey
   );
   return token;
