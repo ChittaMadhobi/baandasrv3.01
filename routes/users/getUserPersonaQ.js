@@ -12,7 +12,7 @@ const dbDebugger = require("debug")("app:db");
 // @desc    Returns the init questions to the client.
 // @access  Public
 router.get("/", async (req, res) => {
-    // dbDebugger('Getting UserPersona via (getUserPersonaQ line 12) for id: ' + req.query.baandaid);
+    dbDebugger('Getting UserPersona via (getUserPersonaQ line 12) for id: ' + req.query.baandaid);
     // console.log('Getting UserPersona via (getUserPersonaQ line 12) for id: ' + req.query.baandaid);
     try {
         let userpersona = await UserPersona.findOne({baandaId: req.query.baandaid}).select("-_id persona_qa_set");

@@ -36,8 +36,8 @@ const userPersonaSchema = new mongoose.Schema({
         default: ""
       },
       inversion_flag: {
-        type: Boolean,
-        default: false
+        type: String,
+        default: ''
       },
       init_question_flag: {
         type: Boolean,

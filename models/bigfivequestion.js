@@ -30,7 +30,7 @@ const bigFiveQuestionSchema = new mongoose.Schema({
         required: true
     },
     inversion_flag: {
-        type: Boolean,
+        type: String,
         required: true
     },
     init_question_flag: {

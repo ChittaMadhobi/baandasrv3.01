@@ -18,13 +18,11 @@ initUserPersona = async baandaid => {
   try {
     const pq = await BigFiveQ.find();
     let persona_qa_set_new = [];
-    let pd = {
-      seq_no: 0,
-      question: "",
-      explanation: ""
-    };
+
+    let pd = {};
 
     pq.forEach(row => {
+      // console.log('row:', row)
       pd = {
         seq_no: row.seq_no,
         question: row.question,
@@ -37,6 +35,7 @@ initUserPersona = async baandaid => {
         init_question_flag: row.init_question_flag,
         score: 0
       };
+      // console.log('before push pd:', pd);
       persona_qa_set_new.push(pd);
     });
     if (persona_qa_set_new.length === 0) {
@@ -60,7 +59,7 @@ initUserPersona = async baandaid => {
       );
       throw 'Failed to create a new persona for the baaandaid: " + baandaid';
     }
-    logMsg = { type: "Application", domain: "Personality", msg: `User ${baandaid} logged in at ${loggedinat}`};
+    logMsg = { type: "Application", domain: "Personality", msg: `User ${baandaid} logged in at ${Date.now()} from initUserPersona.js line 67`};
     logger.info(JSON.stringify(logMsg));
   } catch (err) {
     console.log("Error: " + err);

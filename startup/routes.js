@@ -26,6 +26,7 @@ const dbtest = require('../routes/users/dbtest');
 
 // Application API
 const getUserPersonaQ = require('../routes/users/getUserPersonaQ');
+const postUserPersonaScore = require('../routes/users/postUserPersonaScore');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -55,6 +56,7 @@ module.exports = function(app) {
   app.use("/routes/users/verify", verify);
   app.use('/routes/users/dbtest', dbtest);
   app.use('/routes/users/getUserPersonaQ', getUserPersonaQ);
+  app.use('/routes/users/postUserPersonaScore', postUserPersonaScore);
   
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };

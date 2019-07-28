@@ -14,7 +14,7 @@ const UserPersona = require("../../models/userPersona");
 const validateLoginInput = require("../../validation/users/validateLoginInput");
 const initPersona = require("../../utilsdb/initUserPersona");
 
-// @route   POST api/users/register
+// @route   POST api/users/login
 // @desc    Login user & return JWT Token
 // @access  Public
 router.post("/", async (req, res) => {
