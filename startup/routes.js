@@ -24,9 +24,10 @@ const login = require("../routes/users/login");
 const verify = require("../routes/users/verify");
 const dbtest = require('../routes/users/dbtest');
 
-// Application API
+// Application API - Personality Intelligence related
 const getUserPersonaQ = require('../routes/users/getUserPersonaQ');
 const postUserPersonaScore = require('../routes/users/postUserPersonaScore');
+const getPersonaScores = require('../routes/shared/getPersonaScores');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -57,6 +58,8 @@ module.exports = function(app) {
   app.use('/routes/users/dbtest', dbtest);
   app.use('/routes/users/getUserPersonaQ', getUserPersonaQ);
   app.use('/routes/users/postUserPersonaScore', postUserPersonaScore);
+
+  app.use('/routes/shared/getPersonaScores', getPersonaScores)
   
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };

@@ -14,9 +14,8 @@ const logger = require('../../utils/loggerSetup');
 // @desc    Updates the persona score and inserts OCEAN.
 // @access  Private (should be private - learn to check via jwt)
 router.post("/", async (req, res) => {
+    dbDebugger('Reached /routes/users/postUserPersonaScore req.body:', req.body);
     dbDebugger(
-    "req:",
-    req.body,
     " list length:",
     req.body.personalList.length,
     " baandaid:",
@@ -24,6 +23,7 @@ router.post("/", async (req, res) => {
   );
   let userPersonaDoc, retMsg='';
   try {
+      dbDebugger('Trying UserPersona.findOne ...');
     userPersonaDoc = await UserPersona.findOne({ baandaId: req.body.baandaid });
     dbDebugger('userPersonaDoc:', userPersonaDoc);
     let dl = userPersonaDoc.persona_qa_set.length;
@@ -44,17 +44,17 @@ router.post("/", async (req, res) => {
           " score:"
         );
       }
-      if (i < 2) {
-        dbDebugger(
-          "db userPersonaDoc.seq:",
-          userPersonaDoc.persona_qa_set[i].seq_no,
-          " req seq:",
-          req.body.personalList[i].seq_no
-        );
+    //   if (i < 2) {
+    //     dbDebugger(
+    //       "db userPersonaDoc.seq:",
+    //       userPersonaDoc.persona_qa_set[i].seq_no,
+    //       " req seq:",
+    //       req.body.personalList[i].seq_no
+    //     );
         userPersonaDoc.persona_qa_set[i].score = req.body.personalList[i].score;
-      } else {
-        userPersonaDoc.persona_qa_set[i].score = 7;
-      }
+    //   } else {
+    //     userPersonaDoc.persona_qa_set[i].score = 7;
+    //   }
       //   userPersonaDoc.persona_qa_set[i].score = 5;
     }
 
@@ -81,7 +81,7 @@ router.post("/", async (req, res) => {
         },
         { new: true }
       );
-      retMsg = "Saved Persona"
+      retMsg = "Success"
       dbDebugger('user:', user);
       let logMsg = { type: "application", domain: "personaIntel", msg: `Done init of persona creation for baandaId: ${req.body.baandaid}` };
       logger.info(JSON.stringify(logMsg));
