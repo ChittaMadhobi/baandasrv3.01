@@ -53,10 +53,11 @@ router.post("/", async (req, res) => {
     payload = {
       baandaId: user.baandaId,
       name: user.name,
-      baandaid: user.baandaid,
+      email: user.email,
       avatar: user.avatar,
       isAdmin: user.isAdmin,
-      isInitDone: user.isInitDone
+      isInitDone: user.isInitDone,
+      isInitProfileDone: user.isInitProfileDone
     };
 
     // If the userpersonas collection do not contain this user's document, please insert one.

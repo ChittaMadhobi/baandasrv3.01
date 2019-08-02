@@ -28,6 +28,7 @@ const dbtest = require('../routes/users/dbtest');
 const getUserPersonaQ = require('../routes/users/getUserPersonaQ');
 const postUserPersonaScore = require('../routes/users/postUserPersonaScore');
 const getPersonaScores = require('../routes/shared/getPersonaScores');
+const postUserProfile = require('../routes/users/postUserProfile');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -57,10 +58,11 @@ module.exports = function(app) {
   app.use("/routes/users/verify", verify);
   app.use('/routes/users/dbtest', dbtest);
   app.use('/routes/users/getUserPersonaQ', getUserPersonaQ);
-  app.use('/routes/users/postUserPersonaScore', postUserPersonaScore);
 
-  app.use('/routes/shared/getPersonaScores', getPersonaScores)
-  
+  app.use('/routes/users/postUserPersonaScore', postUserPersonaScore);
+  app.use('/routes/shared/getPersonaScores', getPersonaScores);
+  app.use('/routes/users/postUserProfile', postUserProfile);
+
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };
   logger.info(JSON.stringify(logMsg));

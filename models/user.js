@@ -48,37 +48,30 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  personalInfo: {
-    hommeGeoAddress: {
-      streetAddress: {
-        type: String,
-        default: ""
-      },
-      city: {
-        type: String,
-        default: ""
-      },
-      State: {
-        type: String,
-        default: ""
-      },
-      country: {
-        type: String,
-        default: "USA"
-      },
-      zip: {
-        type: String,
-        default: ""
-      },
-      ipAddress: {
-        address: '',
-        default: ''
-      },
-      geoLocation: {
-        latitude: {type: String, default: ''},
-        longitude: {type: String, default: ''}
-
-      }
+  isInitProfileDone: {
+    type: Boolean,
+    default: false
+  },
+  profileInfo: {
+    preferredName: {
+      type: String,
+      default: ""
+    },
+    formalName: {
+      type: String,
+      default: ""
+    },
+    selfDescription: {
+      type: String,
+      default: ""
+    },
+    preferredPronoun: {
+      type: String,
+      default: ""
+    },
+    geoCentricInfo: {
+      type: String,
+      default: ""
     },
     cell: {
       countryCode: {
@@ -90,15 +83,21 @@ const userSchema = new mongoose.Schema({
         default: ""
       }
     },
-    persona: {
-      O: { type: Number, default: 0},
-      C: { type: Number, default: 0},
-      E: { type: Number, default: 0},
-      A: { type: Number, default: 0},
-      N: { type: Number, default: 0} 
-    }
+    // persona: {
+    //   O: { type: Number, default: 0 },
+    //   C: { type: Number, default: 0 },
+    //   E: { type: Number, default: 0 },
+    //   A: { type: Number, default: 0 },
+    //   N: { type: Number, default: 0 }
+    // }
   },
-
+  persona: {
+    O: { type: Number, default: 0 },
+    C: { type: Number, default: 0 },
+    E: { type: Number, default: 0 },
+    A: { type: Number, default: 0 },
+    N: { type: Number, default: 0 }
+  },
   created_at: { type: Date, default: null },
   updated_at: { type: Date, default: null }
 });

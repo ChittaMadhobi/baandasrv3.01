@@ -8,24 +8,25 @@ const UserPersona = require("../../models/userPersona");
 const User = require("../../models/user");
 
 const dbDebugger = require("debug")("app:db");
-const logger = require('../../utils/loggerSetup');
+const logger = require("../../utils/loggerSetup");
 
 // @route   POST /routes/users/postUserPersonaScore
 // @desc    Updates the persona score and inserts OCEAN.
 // @access  Private (should be private - learn to check via jwt)
 router.post("/", async (req, res) => {
-    dbDebugger('Reached /routes/users/postUserPersonaScore req.body:', req.body);
-    dbDebugger(
+  dbDebugger("Reached /routes/users/postUserPersonaScore req.body:", req.body);
+  dbDebugger(
     " list length:",
     req.body.personalList.length,
     " baandaid:",
     req.body.baandaid
   );
-  let userPersonaDoc, retMsg='';
+  let userPersonaDoc,
+    retMsg = "";
   try {
-      dbDebugger('Trying UserPersona.findOne ...');
+    dbDebugger("Trying UserPersona.findOne ...");
     userPersonaDoc = await UserPersona.findOne({ baandaId: req.body.baandaid });
-    dbDebugger('userPersonaDoc:', userPersonaDoc);
+    dbDebugger("userPersonaDoc:", userPersonaDoc);
     let dl = userPersonaDoc.persona_qa_set.length;
     dbDebugger("dl: ", dl);
     if (dl === 0) {
@@ -44,46 +45,39 @@ router.post("/", async (req, res) => {
           " score:"
         );
       }
-    //   if (i < 2) {
-    //     dbDebugger(
-    //       "db userPersonaDoc.seq:",
-    //       userPersonaDoc.persona_qa_set[i].seq_no,
-    //       " req seq:",
-    //       req.body.personalList[i].seq_no
-    //     );
-        userPersonaDoc.persona_qa_set[i].score = req.body.personalList[i].score;
-    //   } else {
-    //     userPersonaDoc.persona_qa_set[i].score = 7;
-    //   }
-      //   userPersonaDoc.persona_qa_set[i].score = 5;
+
+      userPersonaDoc.persona_qa_set[i].score = req.body.personalList[i].score;
     }
 
     // See if both can be done in a single transaction ....
     let justScore = await userPersonaDoc.save();
     retMsg = "Saved WIP";
-    if (req.body.ocean) {
+    if (req.body.initDone) {
       let update = req.body.ocean;
+      dbDebugger("update:", update, " baandaId:", req.body.baandaid);
       let user = await User.findOneAndUpdate(
         { baandaId: req.body.baandaid },
         {
           $set: {
-            personalInfo: {
-              persona: {
-                O: update.O,
-                C: update.C,
-                E: update.E,
-                A: update.A,
-                N: update.N
-              }
+            persona: {
+              O: update.O,
+              C: update.C,
+              E: update.E,
+              A: update.A,
+              N: update.N
             },
             isInitDone: true
-          },
+          }
         },
         { new: true }
       );
-      retMsg = "Success"
-      dbDebugger('user:', user);
-      let logMsg = { type: "application", domain: "personaIntel", msg: `Done init of persona creation for baandaId: ${req.body.baandaid}` };
+      retMsg = "Success";
+      dbDebugger("user:", user);
+      let logMsg = {
+        type: "application",
+        domain: "personaIntel",
+        msg: `Done init of persona creation for baandaId: ${req.body.baandaid}`
+      };
       logger.info(JSON.stringify(logMsg));
     }
   } catch (err) {

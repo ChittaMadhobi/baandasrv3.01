@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
     // let userpersona = await User.findOne({baandaId: req.query.baandaid}).select("-_id persona_qa_set");
     let userpersona;
     try {
-        userpersona = await User.findOne({baandaId: req.query.baandaid}).select("-_id personalInfo.persona");
+        userpersona = await User.findOne({baandaId: req.query.baandaid}).select("-_id persona");
         if (!userpersona) {
             throw new Error('No persona available for the baandaid:' + req.query.baandaid);
         }
