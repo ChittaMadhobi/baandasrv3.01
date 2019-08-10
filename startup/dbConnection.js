@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 // Load Keys
 const keys = require("../config/keys");
-const db = keys.mongoURI;
+// const db = keys.mongoURI;
+const db = keys.mongoAtlasURI;
 
 module.exports = async function(next) {
   mongoose

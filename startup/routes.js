@@ -30,6 +30,10 @@ const postUserPersonaScore = require('../routes/users/postUserPersonaScore');
 const getPersonaScores = require('../routes/shared/getPersonaScores');
 const postUserProfile = require('../routes/users/postUserProfile');
 
+// API related to Create / Update Community
+const saveNewCommunity = require('../routes/create/saveNewCommunity');
+
+
 module.exports = function(app) {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -62,6 +66,8 @@ module.exports = function(app) {
   app.use('/routes/users/postUserPersonaScore', postUserPersonaScore);
   app.use('/routes/shared/getPersonaScores', getPersonaScores);
   app.use('/routes/users/postUserProfile', postUserProfile);
+
+  app.use('/routes/create/saveNewCommunity', saveNewCommunity);
 
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };

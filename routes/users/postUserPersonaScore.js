@@ -30,9 +30,7 @@ router.post("/", async (req, res) => {
     let dl = userPersonaDoc.persona_qa_set.length;
     dbDebugger("dl: ", dl);
     if (dl === 0) {
-      throw new `No record in userpersonas for baandaid: ${
-        req.body.baandaid
-      }`();
+      throw new Error( `No record in userpersonas for baandaid: ${req.body.baandaid}`);
     }
 
     for (var i = 0; i < dl; i++) {
