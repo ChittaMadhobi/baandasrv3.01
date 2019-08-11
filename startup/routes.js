@@ -32,7 +32,7 @@ const postUserProfile = require('../routes/users/postUserProfile');
 
 // API related to Create / Update Community
 const saveNewCommunity = require('../routes/create/saveNewCommunity');
-
+const ifCommunityExists = require('../routes/create/ifCommunityExists');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -68,6 +68,8 @@ module.exports = function(app) {
   app.use('/routes/users/postUserProfile', postUserProfile);
 
   app.use('/routes/create/saveNewCommunity', saveNewCommunity);
+  app.use('/routes/create/ifCommunityExists', ifCommunityExists);
+  
 
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };

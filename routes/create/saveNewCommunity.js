@@ -6,8 +6,6 @@ const router = express.Router();
 
 const dbDebugger = require("debug")("app:db");
 const logger = require("../../utils/loggerSetup");
-// const jwt = require("jsonwebtoken");
-// const keys = require("../../config/keys");
 
 // DB Schemas
 const Community = require("../../models/community");
@@ -17,8 +15,7 @@ const AccessList = require("../../models/accessList");
 // @desc    Saves a new community (Creation).
 // @access  Private (should be private - check via jwt via middleware when get time)
 router.post("/", async (req, res) => {
-  console.log("Inside save new community", req.body);
-//   dbDebugger("Inside save new community", req.body);
+  dbDebugger("Inside save new community", req.body);
 
   // Start the session pivoted around  creating community
   const session = await Community.startSession();
@@ -28,7 +25,7 @@ router.post("/", async (req, res) => {
       creatorBaandaId: req.body.baandaid,
       commName: req.body.commName
     });
-    console.log("check:", check, " length:", check.length);
+    dbDebugger("check:", check, " length:", check.length);
     if (check.length === 0) {
       const opts = { session };
       // Create a community schema
@@ -63,10 +60,10 @@ router.post("/", async (req, res) => {
       session.endSession();
 
       // return the success message
-      console.log("Community Saved:", retCommunity);
-      console.log("AccessList Saved:", retAccessList);
-    //   dbDebugger("Community Saved:", retCommunity);
-    //   dbDebugger("AccessList Saved:", retAccessList);
+      dbDebugger("Community Saved:", retCommunity);
+      dbDebugger("AccessList Saved:", retAccessList);
+      //   dbDebugger("Community Saved:", retCommunity);
+      //   dbDebugger("AccessList Saved:", retAccessList);
 
       // throw error if not successful.
       res
@@ -82,8 +79,7 @@ router.post("/", async (req, res) => {
   } catch (err) {
     await session.abortTransaction();
     session.endSession();
-    console.log("err:", err);
-    // dbDebugger("err:", err);
+    dbDebugger("err:", err);
     logMsg = {
       type: "API",
       domain: "NewCommunitySave",
@@ -91,12 +87,9 @@ router.post("/", async (req, res) => {
     };
     logger.info(JSON.stringify(logMsg));
     let errMsg = { status: "Error", Msg: err.message };
-    console.log("==================================================");
-    console.log("logMsg:", err.message);
-    console.log("==================================================");
-    // dbDebugger("==================================================");
-    // dbDebugger("logMsg:", err.message);
-    // dbDebugger("==================================================");
+    dbDebugger("==================================================");
+    dbDebugger("logMsg:", err.message);
+    dbDebugger("==================================================");
     res.status(400).json(errMsg);
   }
 });
