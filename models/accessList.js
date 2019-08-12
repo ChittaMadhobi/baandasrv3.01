@@ -14,6 +14,14 @@ const accessListSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  intent: {
+    type: String,
+    required: true
+  },
+  intentFocus: {
+    type: String,
+    required: true
+  },
   role: {
     type: String,
     required: true

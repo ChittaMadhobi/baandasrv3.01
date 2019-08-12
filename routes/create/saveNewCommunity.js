@@ -49,6 +49,8 @@ router.post("/", async (req, res) => {
         baandaId: req.body.baandaid,
         commName: req.body.commName,
         commCaption: req.body.commCaption,
+        intent: req.body.intent,
+        intentFocus: req.body.focus,
         role: "Creator",
         updated_at: Date.now(),
         updated_by_bid: req.body.baandaid

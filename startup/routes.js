@@ -34,6 +34,8 @@ const postUserProfile = require('../routes/users/postUserProfile');
 const saveNewCommunity = require('../routes/create/saveNewCommunity');
 const ifCommunityExists = require('../routes/create/ifCommunityExists');
 
+const getAccessList = require('../routes/dashboard/getAccessList');
+
 module.exports = function(app) {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -67,10 +69,13 @@ module.exports = function(app) {
   app.use('/routes/shared/getPersonaScores', getPersonaScores);
   app.use('/routes/users/postUserProfile', postUserProfile);
 
+  // API for Create  
   app.use('/routes/create/saveNewCommunity', saveNewCommunity);
   app.use('/routes/create/ifCommunityExists', ifCommunityExists);
   
-
+  // API for Dashboard
+  app.use('/routes/dashboard/getAccessList', getAccessList);
+  
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };
   logger.info(JSON.stringify(logMsg));
