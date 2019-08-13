@@ -6,6 +6,10 @@ const communitySchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  communityId: {
+    type: Number,
+    required: true
+  },
   commName: {
     type: String,
     required: true
@@ -51,6 +55,20 @@ const communitySchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: false
+  },
+  centerOfActivityLocation: {
+    addressType: {
+      type: String,
+      default: "Current"
+    },
+    postalAddress: {
+      type: String,
+      default: ""
+    },
+    geoCentricInfo: {
+      type: String,
+      default: ""
+    }
   },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: null },

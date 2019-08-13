@@ -6,6 +6,10 @@ const accessListSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  communityId: {
+    type: Number,
+    required: true
+  },
   commName: {
     type: String,
     required: true

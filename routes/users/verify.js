@@ -38,12 +38,12 @@ router.get("/", async (req, res) => {
 
     // 6. findOneAndUpdate users with the baandaId, isConfirmed = true, isActive=true
     let baandaId = await BaandaID.findOneAndUpdate({
-        ref: "baanda-id-ref  ",
+        ref: "baanda-id-ref",
         $inc: {
           newBaandaID: 1
         }
     });
-
+    
     dbDebugger('baandaId:' + baandaId.newBaandaID + '  email:' + email);
     await User.findOneAndUpdate(
       { email: email },

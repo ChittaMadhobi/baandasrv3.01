@@ -83,13 +83,10 @@ const userSchema = new mongoose.Schema({
         default: ""
       }
     },
-    // persona: {
-    //   O: { type: Number, default: 0 },
-    //   C: { type: Number, default: 0 },
-    //   E: { type: Number, default: 0 },
-    //   A: { type: Number, default: 0 },
-    //   N: { type: Number, default: 0 }
-    // }
+  },
+  availableCredits: {
+    type: Number,
+    default: 10
   },
   persona: {
     O: { type: Number, default: 0 },
