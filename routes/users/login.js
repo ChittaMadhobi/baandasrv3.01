@@ -57,7 +57,8 @@ router.post("/", async (req, res) => {
       avatar: user.avatar,
       isAdmin: user.isAdmin,
       isInitDone: user.isInitDone,
-      isInitProfileDone: user.isInitProfileDone
+      isInitProfileDone: user.isInitProfileDone,
+      availableCredits: user.availableCredits
     };
 
     // If the userpersonas collection do not contain this user's document, please insert one.

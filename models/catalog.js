@@ -10,6 +10,10 @@ const catalogSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  itemId: {
+    type: Number,
+    required: true
+  },
   itemName: {
     type: String,
     required: true
@@ -17,6 +21,10 @@ const catalogSchema = new mongoose.Schema({
   itemCategory: {
     type: String,
     default: ''
+  },
+  itemType: {
+    type: String,
+    required: true
   },
   itemDescription: {
     type: String,
@@ -26,6 +34,18 @@ const catalogSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  unitType: {
+    type: String,
+    required: true
+  },
+  fileUploads: [
+    {
+      key: { type: String },
+      type: { type: String },
+      s3Url: { type: String },
+      caption: { type: String }
+    }
+  ],
   isPublished: {
     type: Boolean,
     default: true
@@ -34,10 +54,12 @@ const catalogSchema = new mongoose.Schema({
     {
       role: {
         type: String,
+        // default: 'aaa'
         required: true
       },
       baandaId: {
         type: Number,
+        // default: 101,
         required: true
       }
     }
@@ -50,6 +72,6 @@ const catalogSchema = new mongoose.Schema({
   }
 });
 
-accessListSchema.index({ creatorBaandaId: 1, commName: 1 }, { unique: true });
+catalogSchema.index({ communityId: 1, itemName: 1 }, { unique: true });
 
 module.exports = Catalog = mongoose.model("catalog", catalogSchema);

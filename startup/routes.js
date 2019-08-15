@@ -34,7 +34,10 @@ const postUserProfile = require('../routes/users/postUserProfile');
 const saveNewCommunity = require('../routes/create/saveNewCommunity');
 const ifCommunityExists = require('../routes/create/ifCommunityExists');
 
+// API Dashboard Catalog
 const getAccessList = require('../routes/dashboard/getAccessList');
+const ifCatalogItemExists = require('../routes/dashboard/ifCatalogItemExists');
+const saveCatalogItem = require('../routes/dashboard/saveCatalogItem');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -75,6 +78,9 @@ module.exports = function(app) {
   
   // API for Dashboard
   app.use('/routes/dashboard/getAccessList', getAccessList);
+  app.use('/routes/dashboard/ifCatalogItemExists', ifCatalogItemExists);
+  app.use('/routes/dashboard/saveCatalogItem', saveCatalogItem);
+  
   
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };
