@@ -56,7 +56,8 @@ router.post("/", async (req, res) => {
         unitType: req.body.unitType,
         fileUploads: fileLoad,
         admins: creator,
-        updated_by_bid: req.body.baandaId
+        updated_by_bid: req.body.baandaId,
+        updated_at: Date.now()
       });
 
       console.log('item: ', item);
@@ -65,7 +66,7 @@ router.post("/", async (req, res) => {
 
       console.log('ret item:', retItem );
       
-      if ( retItem ) {
+      if ( retItem.itemId ) {
         res.status(200).json({ status: "Success", Msg: "Saved Successfully. Enter next item."})
       } else {
         throw new Error(`Failed to save item ${req.body.itemName}. Please notify Baanda support`);

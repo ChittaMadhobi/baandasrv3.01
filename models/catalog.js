@@ -34,9 +34,13 @@ const catalogSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  unitType: {
+  unitType: {     // goods, services, goods & services 
     type: String,
     required: true
+  },
+  currentInventory: {
+    type: Number,
+    default: 0
   },
   fileUploads: [
     {
