@@ -77,5 +77,6 @@ const catalogSchema = new mongoose.Schema({
 });
 
 catalogSchema.index({ communityId: 1, itemName: 1 }, { unique: true });
+// catalogSchema.index({email: “text”,name: “text”}, {weights: {email: 1,name: 2}})
 
 module.exports = Catalog = mongoose.model("catalog", catalogSchema);

@@ -38,6 +38,7 @@ const ifCommunityExists = require('../routes/create/ifCommunityExists');
 const getAccessList = require('../routes/dashboard/getAccessList');
 const ifCatalogItemExists = require('../routes/dashboard/ifCatalogItemExists');
 const saveCatalogItem = require('../routes/dashboard/saveCatalogItem');
+const searchItemToEdit = require('../routes/dashboard/searchItemToEdit');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -80,6 +81,7 @@ module.exports = function(app) {
   app.use('/routes/dashboard/getAccessList', getAccessList);
   app.use('/routes/dashboard/ifCatalogItemExists', ifCatalogItemExists);
   app.use('/routes/dashboard/saveCatalogItem', saveCatalogItem);
+  app.use('/routes/dashboard/searchItemToEdit', searchItemToEdit);
   
   
   app.use(error);
