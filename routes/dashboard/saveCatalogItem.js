@@ -15,7 +15,7 @@ const CatalogItemId = require("../../models/catalogItemID");
 // @desc    Saves a new catalog item.
 // @access  Private (should be private - check via jwt via middleware when get time)
 router.post("/", async (req, res) => {
-  console.log("Inside saveCatalogItem", req.body.fileUploads);
+  dbDebugger("Inside saveCatalogItem", req.body.fileUploads);
   try {
     let check = await Catalog.find({
       communityId: req.body.communityId,
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
         caption: req.body.fileUploads[0].caption,
         s3Url: req.body.fileUploads[0].s3Url
       }];
-      console.log('fileLoad==>>>>>>>>>>>>>>>>', fileLoad);
+      dbDebugger('fileLoad==>>>>>>>>>>>>>>>>', fileLoad);
 
       let item = new Catalog({
         communityId: req.body.communityId,
@@ -60,11 +60,11 @@ router.post("/", async (req, res) => {
         updated_at: Date.now()
       });
 
-      console.log('item: ', item);
+      dbDebugger('item: ', item);
 
       const retItem = await item.save();
 
-      console.log('ret item:', retItem );
+      dbDebugger('ret item:', retItem );
       
       if ( retItem.itemId ) {
         res.status(200).json({ status: "Success", Msg: "Saved Successfully. Enter next item."})
@@ -78,7 +78,7 @@ router.post("/", async (req, res) => {
     }
   } catch (err) {
     // dbDebugger("SaveCatalogItem Err:", err.message);
-    console.log("SaveCatalogItem Err:", err.message);
+    dbDebugger("SaveCatalogItem Err:", err.message);
     let     logMsg = {
       type: "API",
       domain: "saveCatalogItem",

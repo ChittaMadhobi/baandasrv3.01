@@ -14,10 +14,8 @@ const Catalog = require("../../models/catalog");
 // @access  public
 router.get("/", async (req, res) => {
     dbDebugger('Req.query:', req.query)
-    // res.send('Reached searchItemToEdit');
     try {
-        let ret = await Catalog.find( {communityId: req.query.communityId , itemName: { $regex: req.query.itemName, $options: "i"}}).select('-_id itemName itemId').sort({itemName: 1});
-        // let ret = await Catalog.find( {communityId: req.query.communityId , itemName: { $regex: req.query.itemName, $options: "i"}});
+        let ret = await Catalog.find( {itemId: req.query.itemId })
         dbDebugger('ret:', ret);
         res.status(200).send({status: 'Success', Msg: ret});
     } catch (err) {
