@@ -16,8 +16,8 @@ router.get("/", async (req, res) => {
     dbDebugger('Req.query:', req.query)
     // res.send('Reached searchItemToEdit');
     try {
-        let ret = await Catalog.find( {communityId: req.query.communityId , itemName: { $regex: req.query.itemName, $options: "i"}}).select('-_id itemName itemId').sort({itemName: 1});
-        // let ret = await Catalog.find( {communityId: req.query.communityId , itemName: { $regex: req.query.itemName, $options: "i"}});
+        // let ret = await Catalog.find( {communityId: req.query.communityId , itemName: { $regex: req.query.itemName, $options: "i"}}).select('-_id itemName itemId').sort({itemName: 1});
+        let ret = await Catalog.find( {communityId: req.query.communityId , itemName: { $regex: req.query.itemName, $options: "i"}}).select('-_id itemName itemId currentInventory itemPrice').sort({itemName: 1});
         dbDebugger('ret:', ret);
         res.status(200).send({status: 'Success', Msg: ret});
     } catch (err) {

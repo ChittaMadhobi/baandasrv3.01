@@ -41,7 +41,7 @@ const saveCatalogItem = require('../routes/dashboard/saveCatalogItem');
 const searchItemToEdit = require('../routes/dashboard/searchItemToEdit');
 const getItemToEdit = require('../routes/dashboard/getItemToEdit');
 const updateCatalogItem = require('../routes/dashboard/updateCatelogItem');
-
+const updateInventory = require('../routes/dashboard/updateInventory');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -87,6 +87,7 @@ module.exports = function(app) {
   app.use('/routes/dashboard/searchItemToEdit', searchItemToEdit);
   app.use('/routes/dashboard/getItemToEdit', getItemToEdit);
   app.use('/routes/dashboard/updateCatelogItem', updateCatalogItem);
+  app.use('/routes/dashboard/updateInventory', updateInventory);
 
   
   
