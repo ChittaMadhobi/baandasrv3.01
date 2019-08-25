@@ -70,6 +70,16 @@ const communitySchema = new mongoose.Schema({
       default: ""
     }
   },
+  createdGroups: [{
+    groupdId: {
+      type: Number,
+      default: 0
+    },
+    groupName: {
+      type: String,
+      default: ''
+    }
+  }],
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: null },
   updated_by_bid: {

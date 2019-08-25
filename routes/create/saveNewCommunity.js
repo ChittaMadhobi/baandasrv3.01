@@ -11,7 +11,8 @@ const logger = require("../../utils/loggerSetup");
 const Community = require("../../models/community");
 const AccessList = require("../../models/accessList");
 // const BaandaID = require("../../models/baandaID");
-const CommunityID = require('../../models/commuityID');
+// const CommunityID = require('../../models/commuityID');
+const AllBaandaId = require('../../models/allBaandaID');
 
 // @route   POST /routes/create/saveNewCommunity
 // @desc    Saves a new community (Creation).
@@ -30,12 +31,22 @@ router.post("/", async (req, res) => {
     dbDebugger("check:", check, " length:", check.length);
     if (check.length === 0) {
       const opts = { session };
-      let commid = await CommunityID.findOneAndUpdate({
-        ref: "community-id",
-        $inc: {
-          newcommunityid: 1
+      // let commid = await CommunityID.findOneAndUpdate({
+      //   ref: "community-id",
+      //   $inc: {
+      //     newcommunityid: 1
+      //   }
+      // });
+      let commIdObj = await AllBaandaId.findOneAndUpdate(
+        {ref: "community-id"},
+        {
+          $inc: {
+            newbaandadomainid: 1
+          }
         }
-      });
+      );
+      let newCommunityId = commIdObj.newbaandadomainid;
+
       let geoInfo = JSON.stringify(req.body.locationCurr);
       let addr = {
         street: req.body.postalAddress.street,
@@ -53,7 +64,7 @@ router.post("/", async (req, res) => {
       // Create a community schema
       let community = new Community({
         creatorBaandaId: req.body.baandaid,
-        communityId: commid.newcommunityid, 
+        communityId: newCommunityId, 
         commName: req.body.commName,
         commCaption: req.body.commCaption,
         commDescription: req.body.commDescription,
@@ -68,11 +79,10 @@ router.post("/", async (req, res) => {
       });
       // save
       const retCommunity = await community.save(opts);
-      // const retCommunity = await community.save();
 
       let accessList = new AccessList({
         baandaId: req.body.baandaid,
-        communityId: commid.newcommunityid,
+        communityId: newCommunityId,
         commName: req.body.commName,
         commCaption: req.body.commCaption,
         intent: req.body.intent,

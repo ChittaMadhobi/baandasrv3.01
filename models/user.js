@@ -82,7 +82,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ""
       }
-    },
+    }
   },
   availableCredits: {
     type: Number,
@@ -95,6 +95,22 @@ const userSchema = new mongoose.Schema({
     A: { type: Number, default: 0 },
     N: { type: Number, default: 0 }
   },
+  memberOf: [
+    {
+      communityId: {
+        type: Number,
+        default: 0
+      },
+      groupId: {
+        type: Number,
+        default: 0
+      },
+      role: {
+        type: String,
+        default: ''
+      }
+    }
+  ],
   created_at: { type: Date, default: null },
   updated_at: { type: Date, default: null }
 });

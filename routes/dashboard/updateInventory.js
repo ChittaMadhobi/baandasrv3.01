@@ -9,7 +9,8 @@ const logger = require("../../utils/loggerSetup");
 
 // DB Schemas
 const Inventory = require("../../models/inventory");
-const TransactionID = require("../../models/transactionID");
+// const TransactionID = require("../../models/transactionID");
+const AllBaandaId = require('../../models/allBaandaID');
 const Catalog = require("../../models/catalog");
 
 // @route   POST /routes/dashboard/updateInventory
@@ -26,7 +27,17 @@ router.post("/", async (req, res) => {
       }
     });
 
-    dbDebugger('$$$$ transid=', transid.transactionid);
+    let transIdObj = await AllBaandaId.findOneAndUpdate(
+      {ref: "transaction-id"},
+      {
+        $inc: {
+          newbaandadomainid: 1
+        }
+      }
+    );
+    let newtransactionId = transIdObj.newbaandadomainid;
+
+    dbDebugger('$$$$ transid=', newtransactionId);
     let opts;
     if ( transid.transactionid  > 0) {
         dbDebugger('Defining opts');
@@ -36,7 +47,7 @@ router.post("/", async (req, res) => {
     }
     let originTrId;
     if (req.body.transactionOrigin === "Adjustment") {
-      originTrId = transid.transactionid;
+      originTrId = newtransactionId;
     } else {
       originTrId = req.body.originTransId;
     }

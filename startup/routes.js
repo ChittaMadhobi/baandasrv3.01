@@ -42,6 +42,9 @@ const searchItemToEdit = require('../routes/dashboard/searchItemToEdit');
 const getItemToEdit = require('../routes/dashboard/getItemToEdit');
 const updateCatalogItem = require('../routes/dashboard/updateCatelogItem');
 const updateInventory = require('../routes/dashboard/updateInventory');
+const ifGroupExists = require('../routes/dashboard/ifGroupExists');
+const createNewGroup = require('../routes/dashboard/createNewGroup');
+const saveGetGroupMembers = require('../routes/dashboard/saveGetGroupMembers');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -88,9 +91,10 @@ module.exports = function(app) {
   app.use('/routes/dashboard/getItemToEdit', getItemToEdit);
   app.use('/routes/dashboard/updateCatelogItem', updateCatalogItem);
   app.use('/routes/dashboard/updateInventory', updateInventory);
+  app.use('/routes/dashboard/ifGroupExists', ifGroupExists);
+  app.use('/routes/dashboard/createNewGroup', createNewGroup);
+  app.use('/routes/dashboard/saveGetGroupMembers', saveGetGroupMembers);
 
-  
-  
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };
   logger.info(JSON.stringify(logMsg));
