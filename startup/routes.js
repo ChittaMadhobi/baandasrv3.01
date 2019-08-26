@@ -45,6 +45,11 @@ const updateInventory = require('../routes/dashboard/updateInventory');
 const ifGroupExists = require('../routes/dashboard/ifGroupExists');
 const createNewGroup = require('../routes/dashboard/createNewGroup');
 const saveGetGroupMembers = require('../routes/dashboard/saveGetGroupMembers');
+const getGroupsOfCommunity = require('../routes/dashboard/getGroupsOfCommunity');
+const updateGroup = require('../routes/dashboard/updateGroup');
+
+// API for testing features -- remove from production version
+const testprocget = require('../routes/tests/testprocget');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -94,6 +99,12 @@ module.exports = function(app) {
   app.use('/routes/dashboard/ifGroupExists', ifGroupExists);
   app.use('/routes/dashboard/createNewGroup', createNewGroup);
   app.use('/routes/dashboard/saveGetGroupMembers', saveGetGroupMembers);
+  app.use('/routes/dashboard/getGroupsOfCommunity', getGroupsOfCommunity);
+  app.use('/routes/dashboard/updateGroup', updateGroup);
+
+  // API for testing features -- remove  from production
+  app.use('/routes/tests/testprocget', testprocget);
+
 
   app.use(error);
   let logMsg = { type: "server", domain: "start", msg: "Routers initiated" };

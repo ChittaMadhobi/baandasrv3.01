@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
         zip: req.body.postalAddress.zip,
         country: req.body.postalAddress.country
       }
-      dbDebugger("=============== #$#$ communityId:", commid.newcommunityid);
+      dbDebugger("=============== #$#$ communityId:", newCommunityId);
       let location = {
         addressType: req.body.locationType,
         postalAddress: JSON.stringify(addr),

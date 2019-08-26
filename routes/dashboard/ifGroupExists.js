@@ -7,7 +7,7 @@ const router = express.Router();
 const dbDebugger = require("debug")("app:db");
 
 // DB Schemas
-const Catalog = require("../../models/catalog");
+
 const Group = require("../../models/group")
 
 // @route   GET /routes/dashboard/ifGroupExists
@@ -22,7 +22,16 @@ router.get("/", async (req, res) => {
       groupName: req.query.groupName
     });
     if ( check.length > 0) {
-        res.status(200).json({status: "Error", Msg: `The groupName: ${req.query.itemName} exists.`});
+        if ( req.query.groupId === '0' || req.query.groupId === 0 ) {
+          res.status(200).json({status: "Error", Msg: `The groupName: ${req.query.groupName} exists.`});
+        } else  {
+          dbDebugger('check.groupId:', check[0].groupId, ' req.query.groupId:', req.query.groupId, ' int:', parseInt(req.query.groupId));
+          if ( check[0].groupId !== req.query.groupId && check[0].groupId !== parseInt(req.query.groupId) ){
+            res.status(200).json({status: "Error", Msg: `The ${req.query.groupName} is taken.`});
+          } else {
+            res.status(200).json({status: "Success", Msg: ''});
+          }
+        }
     } else {
         res.status(200).json({status: "Success", Msg: ''});
     }
