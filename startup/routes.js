@@ -47,6 +47,7 @@ const createNewGroup = require('../routes/dashboard/createNewGroup');
 const saveGetGroupMembers = require('../routes/dashboard/saveGetGroupMembers');
 const getGroupsOfCommunity = require('../routes/dashboard/getGroupsOfCommunity');
 const updateGroup = require('../routes/dashboard/updateGroup');
+const deleteGroupMember = require('../routes/dashboard/deleteGroupMember');
 
 // API for testing features -- remove from production version
 const testprocget = require('../routes/tests/testprocget');
@@ -101,6 +102,7 @@ module.exports = function(app) {
   app.use('/routes/dashboard/saveGetGroupMembers', saveGetGroupMembers);
   app.use('/routes/dashboard/getGroupsOfCommunity', getGroupsOfCommunity);
   app.use('/routes/dashboard/updateGroup', updateGroup);
+  app.use('/routes/dashboard/deleteGroupMember', deleteGroupMember);
 
   // API for testing features -- remove  from production
   app.use('/routes/tests/testprocget', testprocget);

@@ -17,15 +17,11 @@ const Catalog = require("../../models/catalog");
 // @desc    Saves a new inventory transaction and updates current enventory in catalog.
 // @access  Private (should be private - check via jwt via middleware when get time)
 router.post("/", async (req, res) => {
+  dbDebugger('UodateInventory req.body:', req.body);
+
   const session = await Inventory.startSession();
   session.startTransaction();
   try {
-    let transid = await TransactionID.findOneAndUpdate({
-      ref: "transaction-id",
-      $inc: {
-        transactionid: 1
-      }
-    });
 
     let transIdObj = await AllBaandaId.findOneAndUpdate(
       {ref: "transaction-id"},
@@ -39,7 +35,7 @@ router.post("/", async (req, res) => {
 
     dbDebugger('$$$$ transid=', newtransactionId);
     let opts;
-    if ( transid.transactionid  > 0) {
+    if ( newtransactionId  > 0) {
         dbDebugger('Defining opts');
         opts = { session };
     } else {
@@ -67,7 +63,7 @@ router.post("/", async (req, res) => {
       unit: req.body.unit,
       comment: req.body.comment,
       trasnsactionOrigin: req.body.transactionOrigin,
-      thisTransId: transid.transactionid,
+      thisTransId: newtransactionId,
       originTransId: originTrId,
       updated_at: Date.now(),
       updated_by_bid: req.body.baandaId
@@ -91,7 +87,7 @@ router.post("/", async (req, res) => {
       { new: true }
     );
     if ( !cat.itemId) {
-        throw new Error(`Failed to increment the Catalog inveneotyr ... rolling back trans# ${transid.transactionid}.`)
+        throw new Error(`Failed to increment the Catalog inventory ... rolling back trans# ${transid.transactionid}.`)
     }
     await session.commitTransaction();
     session.endSession();

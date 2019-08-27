@@ -13,13 +13,13 @@ const AccessList = require("../../models/accessList");
 // @desc    Checks if a community exists for validation.
 // @access  public
 router.get("/", async (req, res) => {
-    console.log('req.query:', req.query);
+    dbDebugger('req.query:', req.query);
     try {
         let accesslist = await AccessList.find({ baandaId: req.query.baandaid}).exec();
-        console.log('accesslist:', accesslist);
+        dbDebugger('accesslist:', accesslist);
         res.send(accesslist);
     } catch(err) {
-        console.log("AL Error:", err.message);
+        dbDebugger("AL Error:", err.message);
         res.send(err.message);
     }
     // AccessList.find({ baandaId: req.query.baandaid })
