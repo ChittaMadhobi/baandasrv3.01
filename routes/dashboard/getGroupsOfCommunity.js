@@ -5,6 +5,8 @@ const express = require("express");
 const router = express.Router();
 
 const dbDebugger = require("debug")("app:db");
+// Utlity sort
+const msort = require("../../utils/sortOn");
 
 // DB Schemas
 const Group = require("../../models/group");
@@ -28,8 +30,10 @@ router.get("/", async (req, res) => {
           status: "Error",
           Msg: `No groups in community: ${req.query.communityName}`
         });
-    } else {
-      res.status(200).json({ status: "Success", Msg: groups });
+    } else { 
+      let sorted = msort(groups, "memberName", 'dsc');
+      // console.log('getGroupsOfCommunity sorted:', sorted);
+      res.status(200).json({ status: "Success", Msg: sorted });
     }
   } catch (err) {
     dbDebugger("Error:", err.message);
