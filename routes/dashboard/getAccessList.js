@@ -9,7 +9,7 @@ const dbDebugger = require("debug")("app:db");
 // DB Schemas
 const AccessList = require("../../models/accessList");
 
-// @route   GET /routes/create/checkIfCommunityExists
+// @route   GET /routes/dashboard/checkIfCommunityExists
 // @desc    Checks if a community exists for validation.
 // @access  public
 router.get("/", async (req, res) => {

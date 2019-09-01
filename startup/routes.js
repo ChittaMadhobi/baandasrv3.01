@@ -48,6 +48,9 @@ const saveGetGroupMembers = require('../routes/dashboard/saveGetGroupMembers');
 const getGroupsOfCommunity = require('../routes/dashboard/getGroupsOfCommunity');
 const updateGroup = require('../routes/dashboard/updateGroup');
 const deleteGroupMember = require('../routes/dashboard/deleteGroupMember');
+const saveInvitesAndSendMails = require('../routes/dashboard/saveInvitesAndSendMails');
+const groupInviteResponseApi = require('../routes/dashboard/groupInviteResponseApi');
+const saveInvitesToIndvidual = require('../routes/dashboard/saveInvitesToIndvidual');
 
 // API for testing features -- remove from production version
 const testprocget = require('../routes/tests/testprocget');
@@ -103,6 +106,9 @@ module.exports = function(app) {
   app.use('/routes/dashboard/getGroupsOfCommunity', getGroupsOfCommunity);
   app.use('/routes/dashboard/updateGroup', updateGroup);
   app.use('/routes/dashboard/deleteGroupMember', deleteGroupMember);
+  app.use('/routes/dashboard/saveInvitesAndSendMails', saveInvitesAndSendMails);
+  app.use('/routes/dashboard/groupInviteResponseApi', groupInviteResponseApi);
+  app.use('/routes/dashboard/saveInvitesToIndvidual', saveInvitesToIndvidual);
 
   // API for testing features -- remove  from production
   app.use('/routes/tests/testprocget', testprocget);

@@ -18,6 +18,7 @@ const User = require("../../models/user");
 // @desc    Save & get (conditionally) members of a group.
 // @access  Private (should be private - check via jwt via middleware when get time)
 router.post("/", async (req, res) => {
+  dbDebugger('req.body:', req.body);
   let output = "";
 
   let filter = {
@@ -30,7 +31,7 @@ router.post("/", async (req, res) => {
   //   groupId: req.body.groupId
   // });
   let ret = await Group.find( filter );
-
+ 
   dbDebugger("ret before:", ret[0]);
 
   if (req.body.requestType === "AddSelectMembers") {
@@ -89,6 +90,7 @@ router.post("/", async (req, res) => {
   }
 
   let sorted = msort(output, "memberName", req.body.ascDsc);
+  // console.log('sorted: ', sorted);
   res.status(200).send(sorted);
 
   // let yy = output.sort(sortOn("memberName", req.body.ascDsc));
@@ -98,26 +100,26 @@ router.post("/", async (req, res) => {
 
 module.exports = router;
 
-function sortOn(property, AscDsc) {
-  if (AscDsc === "asc") {
-    return function(a, b) {
-      if (a[property] > b[property]) {
-        return -1;
-      } else if (a[property] < b[property]) {
-        return 1;
-      } else {
-        return 0;
-      }
-    };
-  } else {
-    return function(a, b) {
-      if (a[property] < b[property]) {
-        return -1;
-      } else if (a[property] > b[property]) {
-        return 1;
-      } else {
-        return 0;
-      }
-    };
-  }
-}
+// function sortOn(property, AscDsc) {
+//   if (AscDsc === "asc") {
+//     return function(a, b) {
+//       if (a[property] > b[property]) {
+//         return -1;
+//       } else if (a[property] < b[property]) {
+//         return 1;
+//       } else {
+//         return 0;
+//       }
+//     };
+//   } else {
+//     return function(a, b) {
+//       if (a[property] < b[property]) {
+//         return -1;
+//       } else if (a[property] > b[property]) {
+//         return 1;
+//       } else {
+//         return 0;
+//       }
+//     };
+//   }
+// }

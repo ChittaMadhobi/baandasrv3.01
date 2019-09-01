@@ -6,36 +6,45 @@ const groupSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  groupId: { 
+  groupId: {
     type: Number,
     required: true
   },
   groupName: {
-      type: String,
-      required: true
+    type: String,
+    required: true
   },
   description: {
-      type: String,
-      required: true
+    type: String,
+    required: true
   },
-  members: [{
-      baandaId: { type: Number, default: 0},
-      email: { type: String, default: ''},   // Cannot have duplicate and hence must be tested   
-      cell: { type: String, default: ''},
-      memberName: { type: String, default: ''},
-      inviteSent: { type: Boolean, default: false},
-      response: { type: String, default: 'No-Response'},  // No-response, Accept, Declined
+  members: [
+    {
+      baandaId: { type: Number, default: 0 },
+      email: { type: String, default: "" }, // Cannot have duplicate and hence must be tested
+      cell: { type: String, default: "" },
+      memberName: { type: String, default: "" },
+      inviteSent: { type: Boolean, default: false },
+      response: { type: String, default: "No-Response" }, // No-response, Accept, Declined
       joinDate: { type: Date, default: null },
-      role: { type: String, default: ''}
-  }],
+      role: { type: String, default: "" }
+    }
+  ],
+  inviteLetter: {
+    subject: { type: String, default: "" },
+    salute: { type: String, defaul: "Dear" },
+    body: { type: String, default: "" },
+    acceptLink: { type: String, defaul: "" },
+    signature: { type: String, default: "" }
+  },
   Status: {
-      type: Boolean,
-      default: true         // Creator has to deactivate 
+    type: Boolean,
+    default: true // Creator has to deactivate
   },
   deactivationReason: {
-      type: String,
-      default: ''
-  },  
+    type: String,
+    default: ""
+  },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: null },
   updated_by_bid: {
