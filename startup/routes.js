@@ -53,6 +53,7 @@ const groupInviteResponseApi = require('../routes/dashboard/groupInviteResponseA
 const saveInvitesToIndvidual = require('../routes/dashboard/saveInvitesToIndvidual');
 const getInviteLetterContent = require('../routes/dashboard/getInviteLetterContent');
 const saveInviteLetter = require('../routes/dashboard/saveInviteLetter');
+const getCommunityInfo = require('../routes/dashboard/getCommunityInfo');
 
 // API for testing features -- remove from production version
 const testprocget = require('../routes/tests/testprocget');
@@ -113,6 +114,7 @@ module.exports = function(app) {
   app.use('/routes/dashboard/saveInvitesToIndvidual', saveInvitesToIndvidual);
   app.use('/routes/dashboard/getInviteLetterContent', getInviteLetterContent);
   app.use('/routes/dashboard/saveInviteLetter', saveInviteLetter);
+  app.use('/routes/dashboard/getCommunityInfo', getCommunityInfo);
 
   // API for testing features -- remove  from production
   app.use('/routes/tests/testprocget', testprocget);

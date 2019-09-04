@@ -17,10 +17,10 @@ router.get("/", async (req, res) => {
     try {
         let accesslist = await AccessList.find({ baandaId: req.query.baandaid}).exec();
         dbDebugger('accesslist:', accesslist);
-        res.send(accesslist);
+        res.status(200).json(accesslist);
     } catch(err) {
         dbDebugger("AL Error:", err.message);
-        res.send(err.message);
+        res.status(400).json({status: 'Error', Msg: err.message});
     }
     // AccessList.find({ baandaId: req.query.baandaid })
 });
