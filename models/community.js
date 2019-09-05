@@ -80,6 +80,21 @@ const communitySchema = new mongoose.Schema({
       default: ''
     }
   }],
+  peerCommunities: [{
+    peerCommunityId: { type: Number, default: 0},
+    requestInitiator: { type: String, default: ''},  // self or other
+    dateOfRequest: { type: Date, default: null},
+    response: { type: String, default: ''},  // no-response, accepted, declined
+    relationType: { type: String, default: ''}, // peer, parentof, childof
+    exchangeNotes: [{
+      seqNo: { type: Number, default: 0},
+      note: { type: String, default: ''},
+      sentiment: { type: Number, default: 0},
+      date: { type: Date, default: null},
+      exchangeType: { type: String, default: '' },  // sent, received
+      attachmentUrl: { type: String, default: '' }
+    }]
+  }],
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: null },
   updated_by_bid: {

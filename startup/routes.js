@@ -54,6 +54,8 @@ const saveInvitesToIndvidual = require('../routes/dashboard/saveInvitesToIndvidu
 const getInviteLetterContent = require('../routes/dashboard/getInviteLetterContent');
 const saveInviteLetter = require('../routes/dashboard/saveInviteLetter');
 const getCommunityInfo = require('../routes/dashboard/getCommunityInfo');
+const getMembersOfGroup = require('../routes/dashboard/getMembersOfGroup');
+const getMembersOfCommunity = require('../routes/dashboard/getMembersOfCommunity');
 
 // API for testing features -- remove from production version
 const testprocget = require('../routes/tests/testprocget');
@@ -115,6 +117,9 @@ module.exports = function(app) {
   app.use('/routes/dashboard/getInviteLetterContent', getInviteLetterContent);
   app.use('/routes/dashboard/saveInviteLetter', saveInviteLetter);
   app.use('/routes/dashboard/getCommunityInfo', getCommunityInfo);
+  app.use('/routes/dashboard/getMembersOfGroup', getMembersOfGroup);
+  app.use('/routes/dashboard/getMembersOfCommunity', getMembersOfCommunity);
+
 
   // API for testing features -- remove  from production
   app.use('/routes/tests/testprocget', testprocget);

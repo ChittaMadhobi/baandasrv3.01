@@ -19,15 +19,18 @@ const groupSchema = new mongoose.Schema({
     required: true
   },
   members: [
-    {
+    { 
+      memberType: { type: String, default: 'individual'},  // Can also be a community
       baandaId: { type: Number, default: 0 },
-      email: { type: String, default: "" }, // Cannot have duplicate and hence must be tested
-      cell: { type: String, default: "" },
-      memberName: { type: String, default: "" },
+      communityId: { type: Number, default: 0 },
+      email: { type: String, default: "" }, // unique, could be contact email of peer community
+      cell: { type: String, default: "" }, // unique, could be contact cell of peer community
+      memberName: { type: String, default: "" },  // Could be community name
       inviteSent: { type: Boolean, default: false },
       response: { type: String, default: "No-Response" }, // No-response, Accept, Declined
       joinDate: { type: Date, default: null },
-      role: { type: String, default: "" }
+      role: { type: String, default: "" },
+      relationPolicyId: { type: Number, default: 0 }, // If exists, use that policy to process further
     }
   ],
   inviteLetter: {
