@@ -63,13 +63,13 @@ router.post("/", async (req, res) => {
         baandaId: bid,
         email: req.body.member.email,
         memberName: req.body.member.memberName,
-        cell: req.body.cell,
+        cell: req.body.member.cell,
         inviteSent: false,
         response: "No-response",
         joinDate: Date.now(),
         role: req.body.member.role
       };
-      // dbDebugger('newMember:', newMember);
+      dbDebugger('>>>>>>>>>>>>>>> newMember:', newMember);
       let filter = {
         communityId: req.body.communityId,
         groupId: req.body.groupId
@@ -100,26 +100,4 @@ router.post("/", async (req, res) => {
 
 module.exports = router;
 
-// function sortOn(property, AscDsc) {
-//   if (AscDsc === "asc") {
-//     return function(a, b) {
-//       if (a[property] > b[property]) {
-//         return -1;
-//       } else if (a[property] < b[property]) {
-//         return 1;
-//       } else {
-//         return 0;
-//       }
-//     };
-//   } else {
-//     return function(a, b) {
-//       if (a[property] < b[property]) {
-//         return -1;
-//       } else if (a[property] > b[property]) {
-//         return 1;
-//       } else {
-//         return 0;
-//       }
-//     };
-//   }
-// }
+

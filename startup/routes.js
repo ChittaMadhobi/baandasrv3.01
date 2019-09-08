@@ -56,6 +56,7 @@ const saveInviteLetter = require('../routes/dashboard/saveInviteLetter');
 const getCommunityInfo = require('../routes/dashboard/getCommunityInfo');
 const getMembersOfGroup = require('../routes/dashboard/getMembersOfGroup');
 const getMembersOfCommunity = require('../routes/dashboard/getMembersOfCommunity');
+const saveInvoice = require('../routes/dashboard/saveInvoice');
 
 // API for testing features -- remove from production version
 const testprocget = require('../routes/tests/testprocget');
@@ -119,6 +120,7 @@ module.exports = function(app) {
   app.use('/routes/dashboard/getCommunityInfo', getCommunityInfo);
   app.use('/routes/dashboard/getMembersOfGroup', getMembersOfGroup);
   app.use('/routes/dashboard/getMembersOfCommunity', getMembersOfCommunity);
+  app.use('/routes/dashboard/saveInvoice', saveInvoice);
 
 
   // API for testing features -- remove  from production
