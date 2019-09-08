@@ -15,16 +15,17 @@ const Invoice = require("../../models/invoice");
 const Payment = require("../../models/payment");
 const AllBaandaId = require('../../models/allBaandaID');
 const User = require('../../models/user');
+const Catalog = require('../../models/catalog');
 
 // @route   POST /routes/dashboard/saveInvoice
 // @desc    Save & get (conditionally) members of a group.
 // @access  Private (should be private - check via jwt via middleware when get time)
 router.post("/", async (req, res) => {
   let rb = req.body;
-  console.log("req.body:", rb);
+  // console.log("req.body:", rb);
   
-  const session = await Invoice.startSession();
-  session.startTransaction();
+  // const session = await Invoice.startSession();
+  // session.startTransaction();
   try {
     let newInvoiceId = await AllBaandaId.findOneAndUpdate(
       { ref: "invoice-id" },
@@ -50,9 +51,10 @@ router.post("/", async (req, res) => {
         updated_by_bid: rb.updatedBy
     });
 
-    const opts = { session };
+    // const opts = { session };
 
-    let retIsave = await invoice.save(opts);  // Don'f forget to include opts 
+    // let retIsave = await invoice.save(opts);  // Don't forget to include opts 
+    let retIsave = await invoice.save();  // Don't forget to include opts 
     // console.log('--------------------- Invoice Saving output ----------------');
     // console.log('New Invoice Id:', newInvoiceId.newbaandadomainid);
     if ( !retIsave.communityId ) {
@@ -81,21 +83,26 @@ router.post("/", async (req, res) => {
         updated_by_bid: rb.updatedBy
     });
     
-    // console.log('===================== Payment Saving output ====================');
-    // console.log('New Invoice Id:', newInvoiceId.newbaandadomainid);
+    // // console.log('===================== Payment Saving output ====================');
+    // // console.log('New Invoice Id:', newInvoiceId.newbaandadomainid);
     let retPsave = await payment.save();
     if ( !retPsave.paymentId) {
         throw new Error('Failed to save the invoice without system leve error.');
     }
+    // Update inventory in Catalog for each item sold.
+    let filterc; 
+    rb.itemDetails.forEach(async obj => {
+      filterc = { communityId: rb.communityId, itemId: obj.itemId};
+      await Catalog.findOneAndUpdate( filterc, { $inc: { currentInventory: (obj.quantity * -1) }});
+    });
+
+
     // console.log('retPsave: ', retPsave);
     // await session.commitTransaction();
     // session.endSession();
     let filter = { baandaId: rb.updatedBy}
     // console.log('filter:', filter);
     let retUser = await User.find(filter).select('-_id name email');
-    // console.log('****************** User - community creator: ', retUser);
-    // console.log('Sending email invoices >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
 
     let emailData = {
         orgName: "The Gaia School of Healing & Earth",
@@ -113,13 +120,11 @@ router.post("/", async (req, res) => {
     // console.log('emailData.items:', emailData.items);
     let retEmail = await sendInvoiceEmail(emailData);
     // console.log('sendInvoice retEmail:', retEmail);
-    await session.commitTransaction();
-    session.endSession();
 
     res.send('Successful');
   } catch (err) {
-    await session.abortTransaction();
-    session.endSession();  
+    // await session.abortTransaction();
+    // session.endSession();  
     console.log("Error: ", err.message);
     // Send gaby error email with req.body and error message.
     res.send('Failed to save and send invoice') ;

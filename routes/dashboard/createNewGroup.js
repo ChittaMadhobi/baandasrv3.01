@@ -22,8 +22,8 @@ router.post("/", async (req, res) => {
   dbDebugger("createNewGroup req.body:", req.body);
 
   // Start the session pivoted around  creating community
-  const session = await Group.startSession();
-  session.startTransaction();
+  // const session = await Group.startSession();
+  // session.startTransaction();
   try {
     dbDebugger("On Inside try ... 1");
     // 0. Get creator's info from user
@@ -36,12 +36,6 @@ router.post("/", async (req, res) => {
 
     dbDebugger("creator : ", creator);
     // 1. Get a new groupId
-    // let newGroupId = await groupID.findOneAndUpdate({
-    //   ref: "group_id",
-    //   $inc: {
-    //     groupid: 1
-    //   }
-    // });
     let groupIdObj = await AllBaandaId.findOneAndUpdate(
       { ref: "group-id" },
       {
@@ -55,7 +49,7 @@ router.post("/", async (req, res) => {
     // let ngi = newGroupId.groupid;
     dbDebugger("ngi:", ngi);
 
-    const opts = { session };
+    // const opts = { session };
     // 2. Save in groups
     let creatorMember = [
       {
@@ -81,34 +75,13 @@ router.post("/", async (req, res) => {
       updated_at: Date.now(),
       updated_by_bid: req.body.baandaId
     });
-    let ret1 = await group.save(opts);
+    // let ret1 = await group.save(opts);
+    let ret1 = await group.save();
 
     dbDebugger("group.save ret1:".ret1);
     if (!ret1.groupId) {
       throw new Error("Failed to form the group. Aborting");
     }
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Sample code to find if exists in an array. If not, then create new
-    // This can also be used to pudate some elements when found via $set
-    //
-    // let xx = await User.find({ baandaId: req.body.baandaId }).select(
-    //   "-_id memberOf"
-    // );
-    // dbDebugger("========= xx:", xx);
-    // xx.forEach(async obj => {
-    //   if (obj) {
-    //     dbDebugger("obj:", obj);
-    //     if (obj.communityId !== req.body.communityId && obj.groupId !== ngi) {
-    //       let upRet = await User.findOneAndUpdate(
-    //         { baandaId: req.body.baandaId },
-    //         { $push: { memberOf: member } },
-    //         { new: true }
-    //       );
-    //       dbDebugger("upRet:", upRet);
-    //     }
-    //   }
-    // });
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     // 2. update the creator's user with memberOf and role=Creator
     let member = {
@@ -140,16 +113,16 @@ router.post("/", async (req, res) => {
 
     dbDebugger("updateCommunityRet:", updateCommunityRet);
 
-    await session.commitTransaction();
-    session.endSession();
+    // await session.commitTransaction();
+    // session.endSession();
 
     res.status(200).json({
       status: "Success",
       Msg: {groupId: ngi}
     });
   } catch (err) {
-    await session.abortTransaction();
-    session.endSession();
+    // await session.abortTransaction();
+    // session.endSession();
     dbDebugger("Err:", err.message);
     let errMsg = { status: "Error", Msg: err.message };
     res.status(200).json(errMsg);
