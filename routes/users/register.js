@@ -53,9 +53,9 @@ router.post('/', async (req, res) => {
         });
 
         let retSave = await user.save();
-        // console.log('Post registration save state:' + JSON.stringify(retSave));
+        console.log('Post registration save state:' + JSON.stringify(retSave));
         // send email for verification
-        // console.log('To call confirmEmail with param req:', req.body, '  confirmationCode:', confirmationCode);
+        console.log('To call confirmEmail with param req:', req.body, '  confirmationCode:', confirmationCode);
 
         let retEmail = confirmEmail(req, confirmationCode);
         if (retEmail) {
