@@ -22,8 +22,8 @@ router.get("/", async (req, res) => {
   // 1. define a const target URL (from config) to redirect to
   let clientHost = keys.clientHost;
   console.log(">>>>>>>>>>  clientHost 1: " + clientHost);
-  clientHost = 'https://baandaclient-qa.herokuapp.com/login'
-  console.log("$$$$$$$$$$  clientHost 2: " + clientHost);
+  // clientHost = 'https://baandaclient-qa.herokuapp.com/login'
+  // console.log("$$$$$$$$$$  clientHost 2: " + clientHost);
 
   try {
     // 2. Get user info. (if not found, someone is trying to hack)

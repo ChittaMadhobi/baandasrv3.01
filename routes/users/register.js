@@ -16,7 +16,7 @@ const validateRegisterInput = require('../../validation/users/validateRegisterIn
 // @desc    Registration. Sends email confirmation notice.
 // @access  Public
 router.post('/', async (req, res) => {
-    dbDebugger('Inside /routes/users/register');
+    // console.log('Inside /routes/users/register');
     // Validate
     let { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
@@ -53,9 +53,9 @@ router.post('/', async (req, res) => {
         });
 
         let retSave = await user.save();
-        dbDebugger('Post registration save state:' + JSON.stringify(retSave));
+        // console.log('Post registration save state:' + JSON.stringify(retSave));
         // send email for verification
-        dbDebugger('To call confirmEmail with param req:', req.body, '  confirmationCode:', confirmationCode);
+        // console.log('To call confirmEmail with param req:', req.body, '  confirmationCode:', confirmationCode);
 
         let retEmail = confirmEmail(req, confirmationCode);
         if (retEmail) {
@@ -67,8 +67,8 @@ router.post('/', async (req, res) => {
         }
         // res.status(200).send(_.pick(user, ['name', 'email', 'avatar']));
     } catch(err) {
-        dbDebugger('Failed to create new user :', err);
-        return res.status(401).send('Something went wrong - failed:', err);
+        console.log('Failed to create new user :', err);
+        res.status(401).send('Something went wrong - failed:', err.message);
     }
 })
 
