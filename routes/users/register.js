@@ -55,9 +55,11 @@ router.post('/', async (req, res) => {
         let retSave = await user.save();
         dbDebugger('Post registration save state:' + JSON.stringify(retSave));
         // send email for verification
+        dbDebugger('To call confirmEmail with param req:', req.body, '  confirmationCode:', confirmationCode);
+
         let retEmail = confirmEmail(req, confirmationCode);
         if (retEmail) {
-            res.status(200).json({message:'Registerd successfully. Please confirm your email to register.'});
+            res.status(200).json({message:'Registerd successfully. Please confirm your email to login.'});
             // errors = {};
             // res.status(200).send(); 
         } else {
