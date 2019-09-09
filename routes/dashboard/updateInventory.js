@@ -19,8 +19,8 @@ const Catalog = require("../../models/catalog");
 router.post("/", async (req, res) => {
   dbDebugger('UodateInventory req.body:', req.body);
 
-  const session = await Inventory.startSession();
-  session.startTransaction();
+  // const session = await Inventory.startSession();
+  // session.startTransaction();
   try {
 
     let transIdObj = await AllBaandaId.findOneAndUpdate(
@@ -34,10 +34,10 @@ router.post("/", async (req, res) => {
     let newtransactionId = transIdObj.newbaandadomainid;
 
     dbDebugger('$$$$ transid=', newtransactionId);
-    let opts;
+    // let opts;
     if ( newtransactionId  > 0) {
         dbDebugger('Defining opts');
-        opts = { session };
+        // opts = { session };
     } else {
         throw new Error('Unable to get a new transactionid.')
     }
@@ -69,7 +69,8 @@ router.post("/", async (req, res) => {
       updated_by_bid: req.body.baandaId
     });
 
-    const retInv = await inventory.save(opts);
+    // const retInv = await inventory.save(opts);
+    const retInv = await inventory.save();
     // check if a required field does not exist throw error
     if (!retInv.comment) {
         throw new Error('Failed to insert a row in inventory');
@@ -89,13 +90,13 @@ router.post("/", async (req, res) => {
     if ( !cat.itemId) {
         throw new Error(`Failed to increment the Catalog inventory ... rolling back trans# ${transid.transactionid}.`)
     }
-    await session.commitTransaction();
-    session.endSession();
+    // await session.commitTransaction();
+    // session.endSession();
     res.status(200).json({ status: 'Success', Msg: 'Inventory saved and catalog inventory adjusted.'})
 
   } catch (err) {
-    await session.abortTransaction();
-    session.endSession();
+    // await session.abortTransaction();
+    // session.endSession();
     dbDebugger("Err:", err.message);
     let errMsg = { status: "Error", Msg: err.message};
     res.status(400).json(errMsg);

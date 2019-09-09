@@ -21,8 +21,8 @@ router.post("/", async (req, res) => {
   dbDebugger("Inside save new community", req.body);
 
   // Start the session pivoted around  creating community
-  const session = await Community.startSession();
-  session.startTransaction();
+  // const session = await Community.startSession();
+  // session.startTransaction();
   try {
     let check = await Community.find({
       creatorBaandaId: req.body.baandaid,
@@ -30,13 +30,8 @@ router.post("/", async (req, res) => {
     });
     dbDebugger("check:", check, " length:", check.length);
     if (check.length === 0) {
-      const opts = { session };
-      // let commid = await CommunityID.findOneAndUpdate({
-      //   ref: "community-id",
-      //   $inc: {
-      //     newcommunityid: 1
-      //   }
-      // });
+      // const opts = { session };
+
       let commIdObj = await AllBaandaId.findOneAndUpdate(
         {ref: "community-id"},
         {
@@ -78,7 +73,8 @@ router.post("/", async (req, res) => {
         updated_by_bid: req.body.baandaid
       });
       // save
-      const retCommunity = await community.save(opts);
+      // const retCommunity = await community.save(opts);
+      const retCommunity = await community.save();
 
       let accessList = new AccessList({
         baandaId: req.body.baandaid,
@@ -92,11 +88,11 @@ router.post("/", async (req, res) => {
         updated_by_bid: req.body.baandaid
       });
 
-      const retAccessList = await accessList.save(opts);
-      // const retAccessList = await accessList.save();
+      // const retAccessList = await accessList.save(opts);
+      const retAccessList = await accessList.save();
 
-      await session.commitTransaction();
-      session.endSession();
+      // await session.commitTransaction();
+      // session.endSession();
 
       // return the success message
       dbDebugger("Community Saved:", retCommunity);
@@ -105,8 +101,7 @@ router.post("/", async (req, res) => {
       //   dbDebugger("AccessList Saved:", retAccessList);
 
       // throw error if not successful.
-      res
-        .status(200)
+      res.status(200)
         .json({ status: "Success", Msg: "Save new community in DB" });
     } else {
       throw new Error(
@@ -116,8 +111,8 @@ router.post("/", async (req, res) => {
       );
     }
   } catch (err) {
-    await session.abortTransaction();
-    session.endSession();
+    // await session.abortTransaction();
+    // session.endSession();
     dbDebugger("err:", err);
     logMsg = {
       type: "API",
