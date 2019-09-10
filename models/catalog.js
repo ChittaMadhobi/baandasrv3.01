@@ -28,7 +28,7 @@ const catalogSchema = new mongoose.Schema({
   },
   itemDescription: {
     type: String,
-    required: true
+    default: ''
   },
   itemPrice: {
     type: Number,

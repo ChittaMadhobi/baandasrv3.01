@@ -4,12 +4,12 @@ const emailDebugger = require("debug")("app:email");
 const sendInvoiceGeneric = require("./sendEmailGeneric");
 
 sendInvoiceEmail = async input => {
-//   emailDebugger("%%%%%%%%%%%%%%%%%%% Invoice Email %%%%%%%%%%%%%%%%%%%%%%%%%%");
-//   emailDebugger("invReq:", input);
-//   emailDebugger("################### Email Body Pieces ######################");
+  emailDebugger("%%%%%%%%%%%%%%%%%%% Invoice Email %%%%%%%%%%%%%%%%%%%%%%%%%%");
+  emailDebugger("sendInvoiceEmail invReq:", input);
+  emailDebugger("################### Email Body Pieces ######################");
   let invReq = input.items;
 
-  let itemPortion = "<ol>";
+  let itemPortion = "<ol>"; 
   let totCost = 0;
   invReq.forEach(obj => {
     totCost = totCost + obj.cost;
@@ -198,7 +198,7 @@ sendInvoiceEmail = async input => {
 
   emailData = {
     subject: "Invoice & Receipt from " + input.orgName,
-    toEmail: "jit@baanda.com",
+    toEmail: input.senderEmail,
     body: invHtml
   };
 

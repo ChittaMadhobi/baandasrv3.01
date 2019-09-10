@@ -62,12 +62,12 @@ const communitySchema = new mongoose.Schema({
       default: "Current"
     },
     postalAddress: {
-      type: String,
-      default: ""
+      type: Object,
+      default: null
     },
     geoCentricInfo: {
-      type: String,
-      default: ""
+      type: Object,
+      default: null
     }
   },
   createdGroups: [{

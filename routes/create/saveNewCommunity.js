@@ -53,8 +53,8 @@ router.post("/", async (req, res) => {
       dbDebugger("=============== #$#$ communityId:", newCommunityId);
       let location = {
         addressType: req.body.locationType,
-        postalAddress: JSON.stringify(addr),
-        geoCentricInfo: geoInfo
+        postalAddress: addr,
+        geoCentricInfo: geoInfo 
       }
       // Create a community schema
       let community = new Community({

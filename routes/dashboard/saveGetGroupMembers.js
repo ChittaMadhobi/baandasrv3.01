@@ -18,7 +18,7 @@ const User = require("../../models/user");
 // @desc    Save & get (conditionally) members of a group.
 // @access  Private (should be private - check via jwt via middleware when get time)
 router.post("/", async (req, res) => {
-  dbDebugger('req.body:', req.body);
+  dbDebugger('req.body:', req.body); 
   let output = "";
 
   let filter = {

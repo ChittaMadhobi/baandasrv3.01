@@ -100,9 +100,9 @@ router.post("/", async (req, res) => {
     // console.log('retPsave: ', retPsave);
     // await session.commitTransaction();
     // session.endSession();
-    let filter = { baandaId: rb.updatedBy}
+    // let filter = { baandaId: rb.updatedBy}
     // console.log('filter:', filter);
-    let retUser = await User.find(filter).select('-_id name email');
+    // let retUser = await User.find(filter).select('-_id name email');
 
     let emailData = {
         orgName: "The Gaia School of Healing & Earth",
@@ -114,8 +114,10 @@ router.post("/", async (req, res) => {
         paySchedule: rb.paySchedule,
         paySchedulePolicy: rb.paySchedulePolicy,
         invoiceNote: rb.invoiceNote,
-        senderName: retUser[0].name,
-        senderEmail: retUser[0].email
+        // senderName: retUser[0].name,
+        // senderEmail: retUser[0].email
+        senderName: rb.customerName,
+        senderEmail: rb.invoiceOfEmail
     }
     // console.log('emailData.items:', emailData.items);
     let retEmail = await sendInvoiceEmail(emailData);
