@@ -30,19 +30,18 @@ require("./startup/routes")(app);
 require('./startup/dbConnection')();
 let logMsg; // placeholder variable for logging
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
-
 
 // This is used for testing when deployed (in cloud or anywhere)
 app.get("/", (req, res) => {
   res.send("Hello Baanda 3 - http server testing");
 });
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 // Start the server - ready to listen.
 const port = process.env.PORT || 5000;
