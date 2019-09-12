@@ -7,7 +7,7 @@ const emailDebugger = require("debug")("app:email");
 
 sendEmail = async emailReq => {
 //   emailDebugger("sendEmailGeneric =======================>>");
-  emailDebugger("emailReq:", emailReq);
+  console.log(">>> generic emailReq:", emailReq);
 
   let email = emailReq.toEmail;
 
@@ -16,7 +16,7 @@ sendEmail = async emailReq => {
   let outcome = true;
   let message = "";
 
-  // emailDebugger("htmlLink" + htmlLink + " toEMail:" + toEmail);
+  console.log("generic htmlbody" + htmlbody + " toEMail:" + email);
   let transporter = nodemailer.createTransport({
     host: "smtp.office365.com",
     port: 587,

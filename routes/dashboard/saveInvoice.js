@@ -22,7 +22,9 @@ const Catalog = require('../../models/catalog');
 // @access  Private (should be private - check via jwt via middleware when get time)
 router.post("/", async (req, res) => {
   let rb = req.body;
-  // console.log("req.body:", rb);
+  console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+  console.log("SaveInvoice req.body:", rb);
+  console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
   
   // const session = await Invoice.startSession();
   // session.startTransaction();
@@ -100,26 +102,28 @@ router.post("/", async (req, res) => {
     // console.log('retPsave: ', retPsave);
     // await session.commitTransaction();
     // session.endSession();
-    // let filter = { baandaId: rb.updatedBy}
+    let filter = { baandaId: rb.updatedBy}
     // console.log('filter:', filter);
-    // let retUser = await User.find(filter).select('-_id name email');
+    let retUser = await User.find(filter).select('-_id name email');
 
     let emailData = {
-        orgName: "The Gaia School of Healing & Earth",
-        orgType: "Education, California",
+        orgName: "The Gaia School of Healing & Earth Education, Ca",
+        orgType1: "21909 Alta DR., Topanga, Ca 90290",
+        orgType2: "theGaiaSchoolCa@gmail.com",
         items: rb.itemDetails,
+        toEmail: rb.invoiceOfEmail,
         invoiceId: newInvoiceId.newbaandadomainid,
         customerName: rb.customerName,
         finBreakdown: rb.finBreakdown,
         paySchedule: rb.paySchedule,
         paySchedulePolicy: rb.paySchedulePolicy,
         invoiceNote: rb.invoiceNote,
-        // senderName: retUser[0].name,
-        // senderEmail: retUser[0].email
-        senderName: rb.customerName,
-        senderEmail: rb.invoiceOfEmail
+        senderName: retUser[0].name,
+        senderEmail: retUser[0].email
     }
-    // console.log('emailData.items:', emailData.items);
+    console.log('==========================================================');
+    console.log('emailData.items:', emailData);
+    console.log('==========================================================');
     let retEmail = await sendInvoiceEmail(emailData);
     // console.log('sendInvoice retEmail:', retEmail);
 

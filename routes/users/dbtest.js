@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 // const winston = require('winston');
 
-const BaandaID = require("../../models/baandaID");
+// const BaandaID = require("../../models/baandaID");
+const BaandaID = require('../../models/allBaandaID');
 const logger = require('../../utils/loggerSetup');
 
 // function asyncMiddleware(handler) {

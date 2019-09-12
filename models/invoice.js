@@ -34,7 +34,7 @@ const invoiceSchema = new mongoose.Schema({
   paySchedulePolicy: {
     installmentType: { type: String, enum: [ '', 'monthly', 'bi-monthly', 'weekly', 'bi-weekly']},
     payByDateOfMonth: { type: Number, default: 0},
-    payByDayOfWeek: { type: String, enum: ['', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] },
+    payByDayOfWeek: { type: String, enum: ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
     nextSchedulePayday: { type: Date, default: null}   // used for both installment & partpay
   },
   paidUpFlag: { type: Boolean, default: false},

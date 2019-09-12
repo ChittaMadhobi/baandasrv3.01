@@ -3,13 +3,41 @@ const emailDebugger = require("debug")("app:email");
 // Make a sendInvoiceEmail module in utils
 const sendInvoiceGeneric = require("./sendEmailGeneric");
 
+const weekdays = [
+  { day: "Mon", dayName: "Monday" },
+  { day: "Tue", dayName: "Tuesday" },
+  { day: "Wed", dayName: "Wednesday" },
+  { day: "Thu", dayName: "Thursday" },
+  { day: "Fri", dayName: "Friday" },
+  { day: "Sat", dayName: "Saturday" },
+  { day: "Sun", dayName: "Sunday" }
+];
+
 sendInvoiceEmail = async input => {
-  emailDebugger("%%%%%%%%%%%%%%%%%%% Invoice Email %%%%%%%%%%%%%%%%%%%%%%%%%%");
-  emailDebugger("sendInvoiceEmail invReq:", input);
-  emailDebugger("################### Email Body Pieces ######################");
+  // console.log("%%%%%%%%%%%%%%%%%%% Invoice Email %%%%%%%%%%%%%%%%%%%%%%%%%%");
+  // console.log("sendInvoiceEmail payschedule:", input);
+  // console.log("################### Email Body Pieces ######################");
+  let dayName;
+  if (input.paySchedule.value === "installment") {
+    console.log("!!!!!!!!!!!!!!!!!! we are in installment");
+    let insType = input.paySchedulePolicy.installmentType;
+    console.log("insType:", insType);
+    if (insType === "weekly" || insType === "bi-weekly") {
+      console.log(
+        "inside weekly: input.paySchedulePolicy.payByDayOfWeek :",
+        input.paySchedulePolicy.payByDayOfWeek
+      );
+      weekdays.forEach(obj => {
+        if (obj.day === input.paySchedulePolicy.payByDayOfWeek) {
+          dayName = obj.dayName;
+        }
+      });
+    }
+  }
+
   let invReq = input.items;
 
-  let itemPortion = "<ol>"; 
+  let itemPortion = "<ol>";
   let totCost = 0;
   invReq.forEach(obj => {
     totCost = totCost + obj.cost;
@@ -33,14 +61,16 @@ sendInvoiceEmail = async input => {
       obj.itemName +
       "&nbsp;" +
       dotLine +
-      "(" + obj.quantity + "&nbsp;@&nbsp;" +
+      "(" +
+      obj.quantity +
+      "&nbsp;@&nbsp;" +
       obj.price +
       "$ for " +
       obj.unitName +
       "&nbsp;)" +
-      "&nbsp;&nbsp;<b>" +
+      "&nbsp;&nbsp;&nbsp;$ <b>" +
       obj.cost.toFixed(2) +
-      "</b>&nbsp;$ </li>";
+      "</b></li>";
   });
   itemPortion = itemPortion + "</ol>";
 
@@ -55,8 +85,13 @@ sendInvoiceEmail = async input => {
     "</b></font><br/>";
   invoiceHeader =
     invoiceHeader +
-    "<font color='#7826bf' size='3'><b>" +
-    input.orgType +
+    "<font color='blue' size='3'><b>" +
+    input.orgType1 +
+    "</b></font><br/>";
+  invoiceHeader =
+    invoiceHeader +
+    "<font color='blue' size='3'><b>" +
+    input.orgType2 +
     "</b></font><br/><br/>";
   invoiceHeader =
     invoiceHeader +
@@ -89,7 +124,7 @@ sendInvoiceEmail = async input => {
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payment Process: To be paid in installment<br/>";
     payPolicyL2 =
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next Payment due on:&nbsp;" +
-      nput.paySchedulePolicy.nextSchedulePayDay +
+      input.paySchedulePolicy.nextSchedulePayDay +
       "<br/>";
     payPolicyL3 =
       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Installment type:&nbsp;" +
@@ -105,62 +140,82 @@ sendInvoiceEmail = async input => {
         "&nbsp; day of the month." +
         "<br/>>";
     } else {
-      payPolicyL4 =
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To be paid by&nbsp;" +
-        input.paySchedulePolicy.payByDayOfWeek +
-        "&nbsp; day of the week." +
-        "<br/>>";
+      // payPolicyL4 =
+      //   "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To be paid by&nbsp;" +
+      //   input.paySchedulePolicy.payByDayOfWeek +
+      //   "&nbsp; day of the week." +
+      //   "<br/>>";
+      if (input.paySchedulePolicy.installmentType === "weekly") {
+        payPolicyL4 =
+          "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To be paid by&nbsp;" +
+          dayName +
+          "&nbsp; of every week." +
+          "<br/>>";
+      } else {
+        payPolicyL4 =
+          "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To be paid by&nbsp;" +
+          dayName +
+          "&nbsp; of every two weeks." +
+          "<br/>>";
+      }
     }
   }
 
   let totalSection = "";
   let lineBuffer =
-    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + 
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
     "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
     "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
   totalSection =
     lineBuffer +
-    "Total Itemized Cost:&nbsp;<b>" +
+    "Total Itemized Cost:&nbsp;$&nbsp;<b>" +
     totCost.toFixed(2) +
-    "</b>&nbsp;$<br/>";
+    "</b><br/>";
   if (input.finBreakdown.discountAmount > 0) {
     totalSection =
       totalSection +
       lineBuffer +
-      "Discount Amount:&nbsp;<b>" +
+      "Discount Amount:&nbsp;$&nbsp;<b>" +
       input.finBreakdown.discountAmount.toFixed(2) +
-      "</b>&nbsp;$<br/>";
+      "</b><br/>";
   }
   if (input.finBreakdown.taxAmount > 0) {
     totalSection =
       totalSection +
       lineBuffer +
-      "Tax Amount:&nbsp;<b>" +
+      "Tax Amount:&nbsp;$&nbsp;<b>" +
       input.finBreakdown.taxAmount.toFixed(2) +
-      "</b>&nbsp;$<br/>";
+      "</b><br/>";
   }
   totalSection =
     totalSection +
     lineBuffer +
-    "Total Invoice Amount:&nbsp;<b>" +
+    "Total Invoice Amount:&nbsp;$&nbsp;<b>" +
     input.finBreakdown.totalInvoiceAmount.toFixed(2) +
-    "</b>&nbsp;$</br>";
+    "</b></br>";
   totalSection =
     totalSection +
     lineBuffer +
-    "Total Amount Paid:&nbsp;<b>" +
+    "Total Amount Paid:&nbsp;$&nbsp;<b>" +
     input.finBreakdown.amountPaid.toFixed(2) +
-    "</b>&nbsp;$<br/><br/>";
+    "</b><br/><br/>";
 
   let note = "";
   //   emailDebugger('note:', input.invoiceNote );
 
-  note = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:&nbsp;" + input.invoiceNote + "<br/><br/>";
+  note =
+    "<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Note</b>:&nbsp;" +
+    input.invoiceNote +
+    "<br/><br/>";
 
   let signature =
-       "&nbsp;&nbsp;&nbsp;<font color='black'><i>Thank your for your business ... </i><br/>" +
-       "&nbsp;&nbsp;&nbsp;<font color='blue'><b>" + input.senderName + "</b><br/>" +
-       "&nbsp;&nbsp;&nbsp;<font color='blue'><b>" + input.senderEmail + "</b><br/>"
+    "&nbsp;&nbsp;&nbsp;<font color='black'><i>Thank your for your business ... </i><br/><br/>" +
+    "&nbsp;&nbsp;&nbsp;<font color='blue'><b>" +
+    input.senderName +
+    "</b><br/>" +
+    "&nbsp;&nbsp;&nbsp;<font color='blue'><b>" +
+    input.senderEmail +
+    "</b><br/>";
 
   let invHtml;
   invHtml =
@@ -172,14 +227,14 @@ sendInvoiceEmail = async input => {
     payPolicyL2 +
     payPolicyL3 +
     payPolicyL4 +
-    note + 
-    signature
-    "</pre>";
+    note +
+    signature;
+  ("</pre>");
 
   //   emailDebugger("itemPortion:", invHtml);
 
   // If there are picture attachments embedded in body or put signature logo etc.
-  // use the format such as 
+  // use the format such as
   // htmlbody = htmlbody + ","
   // attachments: [
   //   {
@@ -193,18 +248,19 @@ sendInvoiceEmail = async input => {
   //     cid: "logo"
   //   }
   // ]
-  // To be remembered, htmlbody should include the proper references. Check sendMail.js for 
-  //  reference. 
+  // To be remembered, htmlbody should include the proper references. Check sendMail.js for
+  //  reference.
 
   emailData = {
     subject: "Invoice & Receipt from " + input.orgName,
-    toEmail: input.senderEmail,
+    toEmail: input.toEmail,
     body: invHtml
   };
+  console.log("Before  calling  sendInvoiceGeneric");
 
   let retEmail = await sendInvoiceGeneric(emailData);
 
-  emailDebugger("sendInvoiceEmail retEmail:", retEmail);
+  console.log("sendInvoiceEmail retEmail:", retEmail);
 
   return retEmail;
 };

@@ -65,14 +65,15 @@ router.post("/", async (req, res) => {
       trasnsactionOrigin: req.body.transactionOrigin,
       thisTransId: newtransactionId,
       originTransId: originTrId,
-      updated_at: Date.now(),
+      updated_at: Date.now(), 
       updated_by_bid: req.body.baandaId
     });
 
     // const retInv = await inventory.save(opts);
     const retInv = await inventory.save();
     // check if a required field does not exist throw error
-    if (!retInv.comment) {
+    console.log('>>>>>>>>>>>>>>> retInv: ', retInv);
+    if (retInv.itenId === 0) {
         throw new Error('Failed to insert a row in inventory');
     }
      let cat = await Catalog.findOneAndUpdate(

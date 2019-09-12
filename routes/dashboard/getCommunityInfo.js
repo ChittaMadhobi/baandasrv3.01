@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
   let check;
   try {
     let filter = { communityId: req.query.communityId}
-    let commInfo = await Community.find(filter).select('-_id joiningProcess');
+    let commInfo = await Commuity.find(filter).select('-_id joiningProcess');
     dbDebugger('commInfo:', commInfo);
     res.status(200).json({
         joiningProcess: commInfo[0].joiningProcess
