@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
 
         let retEmail = confirmEmail(req, confirmationCode);
         if (retEmail) {
-            res.status(200).json({message:'Registerd successfully. Please confirm your email to login.'});
+            res.status(200).json({message:'Registered successfully. Please confirm your email to login.'});
             // errors = {};
             // res.status(200).send(); 
         } else {

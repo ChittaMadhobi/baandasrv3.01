@@ -15,7 +15,7 @@ const weekdays = [
 
 sendInvoiceEmail = async input => {
   // console.log("%%%%%%%%%%%%%%%%%%% Invoice Email %%%%%%%%%%%%%%%%%%%%%%%%%%");
-  console.log("sendInvoiceEmail payschedule:", input);
+  // console.log("sendInvoiceEmail payschedule:", input);
   // console.log("################### Email Body Pieces ######################");
   let dayName;
   if (input.paySchedule.value === "installment") {
