@@ -16,7 +16,7 @@ const dbDebugger = require("debug")("app:db");
 router.get("/", async (req, res) => {
   dbDebugger("groupInviteResponseApp req.query:", req.query);
   const baandaApp = keys.baandaApp;
-  dbDebugger("BaandaApp: " + baandaApp);
+  console.log("BaandaApp: " + baandaApp);
 
   try {
     let filterMember = {

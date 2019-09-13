@@ -60,8 +60,8 @@ confirmMail = (req, confirmCode) => {
                 cid: "welcome"
             },
             {
-              filename: 'logotr-46x46.png',
-              path: __dirname + '/logotr-46x46.png',
+              filename: 'baandalogo.png',
+              path: __dirname + '/baandalogo.png',
               cid: "baandalogo"
           }
         ]

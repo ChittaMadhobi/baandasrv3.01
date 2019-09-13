@@ -10,10 +10,8 @@ sendEmail = emailReq => {
   let email = emailReq.toEmail;
   // console.log("sendEmail ---------------------------------------");
   let link =
-    emailReq.protocol +
-    "://" +
     keys.emailHost +
-    "/routes/dashboard/groupInviteResponseApi?fromEmail=" +
+    "routes/dashboard/groupInviteResponseApi?fromEmail=" +
     email + "&communityId=" + emailReq.communityId +
     "&groupId=" + emailReq.groupId +
     "&response=" +
@@ -67,8 +65,8 @@ sendEmail = emailReq => {
         cid: "welcome"
       },
       {
-        filename: "logotr-46x46.png",
-        path: __dirname + "/logotr-46x46.png",
+        filename: "baandalogo.png",
+        path: __dirname + "/baandalogo.png",
         cid: "baandalogo"
       }
     ]
