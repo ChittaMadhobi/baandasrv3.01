@@ -22,9 +22,9 @@ const Catalog = require('../../models/catalog');
 // @access  Private (should be private - check via jwt via middleware when get time)
 router.post("/", async (req, res) => {
   let rb = req.body;
-  console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-  console.log("SaveInvoice req.body:", rb);
-  console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+  dbDebugger('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+  dbDebugger("SaveInvoice req.body:", rb);
+  dbDebugger('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
   
   // const session = await Invoice.startSession();
   // session.startTransaction();
@@ -38,6 +38,11 @@ router.post("/", async (req, res) => {
       }
     );
 
+    let paidupFlag = false;
+    if ( rb.paySchedule.value === 'fullpay') {
+      paidupFlag = true
+    }
+
     let invoice = new Invoice({
         invoiceOfBaandaId: rb.invoiceOfBaandaId,
         invoiceId: newInvoiceId.newbaandadomainid,
@@ -49,6 +54,7 @@ router.post("/", async (req, res) => {
         financeBreakdown: rb.finBreakdown,
         itemDetails: rb.itemDetails,
         invoiceNote: rb.invoiceNote,
+        paidUpFlag: paidupFlag,
         updated_at: Date.now(),
         updated_by_bid: rb.updatedBy
     });
@@ -57,12 +63,12 @@ router.post("/", async (req, res) => {
 
     // let retIsave = await invoice.save(opts);  // Don't forget to include opts 
     let retIsave = await invoice.save();  // Don't forget to include opts 
-    // console.log('--------------------- Invoice Saving output ----------------');
-    // console.log('New Invoice Id:', newInvoiceId.newbaandadomainid);
+    // dbDebugger('--------------------- Invoice Saving output ----------------');
+    // dbDebugger('New Invoice Id:', newInvoiceId.newbaandadomainid);
     if ( !retIsave.communityId ) {
         throw new Error('Failed to save the invoice without system leve error.');
     }
-    // console.log ('retIsave:', retIsave);
+    // dbDebugger ('retIsave:', retIsave);
 
     let newPaymentId = await AllBaandaId.findOneAndUpdate(
         { ref: "payment-id" },
@@ -73,7 +79,7 @@ router.post("/", async (req, res) => {
         }
       );
 
-    // console.log ('newPaymentId:', newPaymentId.newbaandadomainid);
+    // dbDebugger ('newPaymentId:', newPaymentId.newbaandadomainid);
     let payment = new Payment({
         paymentType: 'receiveable',
         paymentId: newPaymentId.newbaandadomainid,
@@ -85,8 +91,8 @@ router.post("/", async (req, res) => {
         updated_by_bid: rb.updatedBy
     });
     
-    // // console.log('===================== Payment Saving output ====================');
-    // // console.log('New Invoice Id:', newInvoiceId.newbaandadomainid);
+    // // dbDebugger('===================== Payment Saving output ====================');
+    // // dbDebugger('New Invoice Id:', newInvoiceId.newbaandadomainid);
     let retPsave = await payment.save();
     if ( !retPsave.paymentId) {
         throw new Error('Failed to save the invoice without system leve error.');
@@ -99,11 +105,11 @@ router.post("/", async (req, res) => {
     });
 
 
-    // console.log('retPsave: ', retPsave);
+    // dbDebugger('retPsave: ', retPsave);
     // await session.commitTransaction();
     // session.endSession();
     let filter = { baandaId: rb.updatedBy}
-    // console.log('filter:', filter);
+    // dbDebugger('filter:', filter);
     let retUser = await User.find(filter).select('-_id name email');
 
     let emailData = {
@@ -111,7 +117,7 @@ router.post("/", async (req, res) => {
         orgType1: "21909 Alta DR., Topanga, Ca 90290",
         orgType2: "theGaiaSchoolCa@gmail.com",
         items: rb.itemDetails,
-        toEmail: rb.invoiceOfEmail,
+        toEmail: rb.invoiceOfEmail, 
         invoiceId: newInvoiceId.newbaandadomainid,
         customerName: rb.customerName,
         finBreakdown: rb.finBreakdown,
@@ -121,9 +127,9 @@ router.post("/", async (req, res) => {
         senderName: retUser[0].name,
         senderEmail: retUser[0].email
     }
-    console.log('==========================================================');
-    console.log('emailData.items:', emailData);
-    console.log('==========================================================');
+    dbDebugger('==========================================================');
+    dbDebugger('emailData.items:', emailData);
+    dbDebugger('==========================================================');
     let retEmail = await sendInvoiceEmail(emailData);
     // console.log('sendInvoice retEmail:', retEmail);
 
